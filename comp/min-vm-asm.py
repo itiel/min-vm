@@ -1,5 +1,20 @@
-# This program is supoused to be exported to C later.
-# We're using python first just to speed development.
+"""
+Author: Itiel Lopez - itiel@soyitiel.com
+Created: 29/07/2021
+Last updated: 06/08/2021
+"""
+
+""" 
+NOTE:
+    You'll probably notice that here we do some things that
+    might be considered unncesary in python. Like, why don't 
+    we just split the asm file into lines and then we scan it? 
+    The thing is, this program is supoused to be exported to C 
+    later. We're just using python first to speed development. 
+    The goal is to make this assembler part of the VM program 
+    available as a command (maybe?).
+
+"""
 
 from enum import Enum, IntEnum, unique
 import sys
@@ -503,8 +518,8 @@ class Tokenizer:
 
             # String (starts with ")
 
-            # TODO: It's doesn't read empty strings ("") correctly.
-            #       Rectify that.
+            # TODO: It has trouble scanning empty strings ("") 
+            #       correctly. Rectify that.
 
             elif state == tkr_sts.STRING:
 
