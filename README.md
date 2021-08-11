@@ -23,26 +23,26 @@ Also, I find myself better understanding abstract things when shown a picture of
 
 [🚧 Some description]
 
-| Opcode   | Asm Instruction Name                                   | Description                                           |
-| :------: | :----------------------------------------------------- | :---------------------------------------------------- |
-|   `00`   | `nop`, `noop`, `nope`                                  | No operation                                          |
-| | ***Data***                                                                                                              |
-|   `20`   | `ld #val`, `lda #val`                                  | Load value to ***a***                                   |
-|   `21`   | `ldb #val`                                             | Load value to ***b***                                   |
-|   `22`   | `ldc #val`                                             | Load value to ***c***                                   |
-|   `23`   | `laa`, `ldaa`                                          | Load data from ***a*** to ***a***                         |
-|   `24`   | `lab`, `ldab`                                          | Load data from ***a*** to ***b***                         |
-|   `25`   | `lac`, `ldac`                                          | Load data from ***a*** to ***c***                         |
-|   `26`   | `lba`, `ldba`                                          | Load data from ***b*** to ***a***                         |
-|   `27`   | `lbb`, `ldbb`                                          | Load data from ***b*** to ***b***                         |
-|   `28`   | `lbc`, `ldbc`                                          | Load data from ***b*** to ***c***                         |
-|   `29`   | `lca`, `ldca`                                          | Load data from ***c*** to ***a***                         |
-|   `2A`   | `lcb`, `ldcb`                                          | Load data from ***c*** to ***b***                         |
-|   `2B`   | `lcc`, `ldcc`                                          | Load data from ***c*** to ***c***                         |
-| | ***Logic***                                                                                                             |
+| Opcode   | Asm Instruction Name                                   | Description                                                 |
+| :------: | :----------------------------------------------------- | :----------------------------------------------------       |
+|   `00`   | `nop`, `noop`, `nope`                                  | No operation                                                |
+| | ***Data***                                                                                                                    |
+|   `20`   | `ld #val`, `lda #val`                                  | Load value to ***a***                                       |
+|   `21`   | `ldb #val`                                             | Load value to ***b***                                       |
+|   `22`   | `ldc #val`                                             | Load value to ***c***                                       |
+|   `23`   | `laa`, `ldaa`                                          | Load data from ***a*** to ***a***                           |
+|   `24`   | `lab`, `ldab`                                          | Load data from ***a*** to ***b***                           |
+|   `25`   | `lac`, `ldac`                                          | Load data from ***a*** to ***c***                           |
+|   `26`   | `lba`, `ldba`                                          | Load data from ***b*** to ***a***                           |
+|   `27`   | `lbb`, `ldbb`                                          | Load data from ***b*** to ***b***                           |
+|   `28`   | `lbc`, `ldbc`                                          | Load data from ***b*** to ***c***                           |
+|   `29`   | `lca`, `ldca`                                          | Load data from ***c*** to ***a***                           |
+|   `2A`   | `lcb`, `ldcb`                                          | Load data from ***c*** to ***b***                           |
+|   `2B`   | `lcc`, `ldcc`                                          | Load data from ***c*** to ***c***                           |
+| | ***Logic***                                                                                                                   |
 |   `40`   | `and`, `cmp`, `comp`                                   | Compare ***a*** to ***b*** and store result in ***c***      |
 |   `41`   | `xor`, `xr`                                            | Exclusive-or ***a*** to ***b*** and store result in ***c*** |
-| | ***Arithmetics***                                                                                                       |
+| | ***Arithmetics***                                                                                                             |
 |   `60`   | `add`, `ad`, `sum`, `sm`, `addc`, `adc`, `sumc`, `smc` | Add ***a*** plus ***b*** and store result in ***c***        |
 |   `61`   | `adda`, `ada`, `suma`, `sma`                           | Add ***a*** plus ***b*** and store result in ***a***        |
 |   `62`   | `addb`, `adb`, `sumb`, `smb`                           | Add ***a*** plus ***b*** and store result in ***b***        |
@@ -55,8 +55,8 @@ Also, I find myself better understanding abstract things when shown a picture of
 |   `69`   | `mult`, `mlt`, `mul`, `ml`, `mltc`, `mulc`, `mlc`      | Multiply ***a*** by ***b*** and store result in ***c***     |
 |   `6A`   | `mlta`, `mula`, `mla`                                  | Multiply ***a*** by ***b*** and store result in ***a***     |
 |   `6B`   | `mltb`, `mulb`, `mlb`                                  | Multiply ***a*** by ***b*** and store result in ***b***     |
-| | ***Halt***                                                                                                              |
-|   `FF`   | `halt`, `hlt`, `stop`, `stp`                           | Stop simulation                                       |
+| | ***Halt***                                                                                                                    |
+|   `FF`   | `halt`, `hlt`, `stop`, `stp`                           | Stop simulation                                             |
 
 ### The compiler ✍
 
