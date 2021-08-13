@@ -6,3 +6,6 @@ CC = gcc
 
 asm:
 	$(CC) $(INC) -o test/asm-test/asm core/asm.c
+
+clean:
+	rm test/asm-test/asm

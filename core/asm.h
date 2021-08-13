@@ -1,7 +1,6 @@
 /*    
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 12/08/2021
- . Last updated: 12/08/2021
  */
 
 #ifndef _ASM_H_
