@@ -11,8 +11,8 @@
  .       https://github.com/jdah/tetris-os/blob/master/src/util.h
 */
 
-#ifndef _FWNUMS_H 
-#define _FWNUMS_H 
+#ifndef _FWN_H 
+#define _FWN_H 
 
 /* Signed */
 
@@ -45,4 +45,4 @@ typedef unsigned long long  u64;
 typedef float               f32;
 typedef double              f64;
 
-#endif /*_FWNUMS_H */
+#endif /*_FWN_H */
