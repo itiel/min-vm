@@ -5,6 +5,8 @@
 # Welcome to min-vm
 An experimental VM hand-crafted with love. ❤
 
+> **⚠ Warning:** Most of this file is a draft. May contain inaccurate information. Read with caution.
+
 ## Intro 🌟
 
 (Please excuse my english, it isn't my first language. 🙏)
@@ -19,11 +21,17 @@ Also, I find myself better understanding abstract things when shown a picture of
 
 [🚧 Some description]
 
+## The compiler ✍
+
+Technically an assembler, not a compiler, but it sounds *way cooler*. 😎 
+
 ### The instruction set 🧬
 
-[🚧 Some description]
+By convention, instruction names are at least 2 and not more than 4 characters long.
 
-| Opcode   | Asm Instruction Name                                   | Description                                                 |
+The following is a list of the instructions the assembler is (or will be) able to interpret.
+
+| Opcode   | Instruction Name                                       | Description                                                 |
 | :------: | :----------------------------------------------------- | :----------------------------------------------------       |
 |   `00`   | `nop`, `noop`, `nope`                                  | No operation                                                |
 | | ***Data***                                                                                                                    |
@@ -57,10 +65,6 @@ Also, I find myself better understanding abstract things when shown a picture of
 |   `6B`   | `mltb`, `mulb`, `mlb`                                  | Multiply ***a*** by ***b*** and store result in ***b***     |
 | | ***Halt***                                                                                                                    |
 |   `FF`   | `halt`, `hlt`, `stop`, `stp`                           | Stop simulation                                             |
-
-### The compiler ✍
-
-Technically an assembler, not a compiler, but it sounds *way cooler*. 😎 
 
 ## Useful resources
 
