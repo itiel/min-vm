@@ -10,13 +10,10 @@
 
 int main (int argc, char const ** argv) {
 
-    if (argc > 1) {
-        
-        long buff_len;
+    long buff_len;
+    char buffer[BUFFMAXLEN];
 
-        /* -- file2buff_maxlen() -- */
-    
-        char buffer[BUFFMAXLEN];
+    if (argc > 1) {
 
         buff_len = file2buff_maxlen((char *) argv[1], buffer, BUFFMAXLEN);
 
