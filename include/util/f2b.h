@@ -80,21 +80,7 @@ i64 file2buff_maxlen (i8 * file_name, i8 * buffer, i64 max_len);
  . 
  . Recomended use:
  . 
- .     #define BUFFMAXLEN 2048
- .     
- .     char buffer[BUFFMAXLEN];
- .     long buff_len;
- .     
- .     buff_len = file2buff_maxlen("/file/path/file_name", buffer, BUFFMAXLEN);
- .     
- .     if (buff_len < 0) {
- .     
- .         // Hanlde error
- .     
- .     }
- .     
- .     printf("buff_len:   %ld\n", buff_len);
- .     printf("buffer:\n   %s\n", buffer);
+ .     TODO: Fill recomended Use
 */
 
 i64 file2buff_fread (FILE * file, i8 * buffer, i64 max_len);
