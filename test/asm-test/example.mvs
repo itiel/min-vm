@@ -1,5 +1,15 @@
-lda		0	; Load the value of 1 to a
-ldb		5	; Load the value of 5 to b
-sum		"fgss"	; Add a plus b and store the result in c
-nope		; Do nothing
-hlt			; Stop simulation
+; Vars
+
+a1  5
+
+start:
+
+    ; Load 1 to a and 5 to b
+
+    lda     1
+    ldb     5
+
+    sum         ; Add a plus b and store the result in c
+    nope        ; Do nothing
+
+    hlt         ; Stop simulation

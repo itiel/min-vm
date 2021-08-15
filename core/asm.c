@@ -1,21 +1,24 @@
 /*    
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 12/08/2021
- */
+*/
 
-#include <util/f2b.h>
 #include "asm.h"
 
-#define BUFFMAXLEN 2048
+#define BUFFSIZE    2048
+#define TOKLISTSIZE 256
 
 int main (int argc, char const ** argv) {
 
-    long buff_len;
-    char buffer[BUFFMAXLEN];
+    char             buffer[BUFFSIZE];
+    long             buff_len;
+    mvm_asm_token_t  tokens[TOKLISTSIZE];
+    i64              tokens_len;
+    mvm_asm_parser_t parser;
 
     if (argc > 1) {
 
-        buff_len = file2buff_maxlen((char *) argv[1], buffer, BUFFMAXLEN);
+        buff_len = file2buff((char *) argv[1], buffer, BUFFSIZE);
 
         if (buff_len < 0) {
 
@@ -23,9 +26,9 @@ int main (int argc, char const ** argv) {
 
         }
 
-        printf("buffer_len: %ld\n", buff_len);
+        mvm_asm_parser_init(&parser, buffer, buff_len, tokens, TOKLISTSIZE);
 
-        printf("buffer:\n%s\n", buffer);
+        mvm_asm_parse(&parser);
 
     }
 
