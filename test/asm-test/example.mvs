@@ -2,7 +2,7 @@
 
 a1  5
 
-start:
+.start:
 
     ; Load 1 to a and 5 to b
 
