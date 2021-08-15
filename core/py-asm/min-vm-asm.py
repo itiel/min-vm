@@ -1,7 +1,6 @@
 """
 Author: Itiel Lopez - itiel@soyitiel.com
 Created: 29/07/2021
-Last updated: 06/08/2021
 """
 
 """ 
