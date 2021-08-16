@@ -411,4 +411,4 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
 }
 
-#endif /* #ifndef _ASM_H_ 
+#endif /* #ifndef _ASM_H_ */
