@@ -9,13 +9,11 @@ An experimental VM hand-crafted with love. ❤
 
 ## Intro 🌟
 
-(Please excuse my english, it isn't my first language. 🙏)
+> Please excuse my english, it isn't my first language. Thank you. 🙏
 
-**min-vm** represents my own attempt 💪 at understanding the subject of vitual machines. 
+**min-vm** represents my own attempt 💪 at understanding the subject of virtual machines. 
 
-I had heard about systems that function on their own VMs (like Java ☕ or Python 🐍), but I hadn't really understood how or why that was, nor did I really care. But then I found some examples of individuals who built their own physical CPUs on breadboards or wrote their own custom VMs in C or something. *That's when* I got interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too. 
-
-Also, I find myself better understanding abstract things when shown a picture of them (y'know, like ♻ or ♾) or, even better, when I try to make it myself. So, there's that as well. 
+I had heard about systems that function on their own VMs (like Java ☕ or Python 🐍), but I hadn't really understood how or why that was, nor did I really care. But then I found some examples of individuals who built their own physical CPUs on breadboards or wrote their own custom VMs in C or something. *That's when* I got interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too.  
 
 ## The VM ⚙
 
