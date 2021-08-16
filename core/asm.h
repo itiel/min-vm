@@ -145,7 +145,27 @@ i8 mvm_asm_tokenizer_init (
 
     char * error_msg;
 
-    // TODO: Check for NULL pointers
+    if (!tokenizer) {
+        
+        error_msg = 
+            "Error in mvm_asm_tokenizer_init():\n" \
+            "  Tokenizer pointer should not be NULL.\n";
+
+        fprintf(stderr, error_msg, 0);
+
+        return 0;
+    }
+
+    if (!parser) {
+        
+        error_msg = 
+            "Error in mvm_asm_tokenizer_init():\n" \
+            "  Parser pointer should not be NULL.\n";
+
+        fprintf(stderr, error_msg, 0);
+
+        return 0;
+    }
 
     if (parser->status != MVM_AES_INIT) {
         
@@ -186,7 +206,19 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     tokenizer->status = MVM_AES_IN_USE;
 
-    // TODO: append file start token before starting 
+    // Append file start token before scanning
+
+    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_START)) {
+
+        error_msg = 
+            "Error in mvm_asm_tokenize():\n" \
+            "  Something unexpected happened while generating new token.\n";
+
+        fprintf(stderr, error_msg, 0);
+        
+        return 0;
+
+    } 
 
     while (ch = tokenizer->parser->src[++tokenizer->ch_idx]) {
 
@@ -210,7 +242,19 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     }
 
-    // TODO: append file end token after finishing 
+    // Append file end token after finishing 
+
+    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_END)) {
+
+        error_msg = 
+            "Error in mvm_asm_tokenize():\n" \
+            "  Something unexpected happened while generating new token.\n";
+
+        fprintf(stderr, error_msg, 0);
+        
+        return 0;
+
+    }
 
     return 1;
 
@@ -224,9 +268,42 @@ i8 mvm_asm_parser_init (
     i64              token_list_size) 
 {
 
+    char * error_msg;
+
     // Prob Check for parent elem status here
 
-    // TODO: Check for NULL pointers
+    if (!parser) {
+        
+        error_msg = 
+            "Error in mvm_asm_parser_init():\n" \
+            "  Parser pointer should not be NULL.\n";
+
+        fprintf(stderr, error_msg, 0);
+
+        return 0;
+    }
+
+    if (!src) {
+        
+        error_msg = 
+            "Error in mvm_asm_parser_init():\n" \
+            "  Source string pointer should not be NULL.\n";
+
+        fprintf(stderr, error_msg, 0);
+
+        return 0;
+    }
+
+    if (!token_list) {
+        
+        error_msg = 
+            "Error in mvm_asm_parser_init():\n" \
+            "  Token list pointer should not be NULL.\n";
+
+        fprintf(stderr, error_msg, 0);
+
+        return 0;
+    }
 
     parser->src             = src;
     parser->src_len         = src_len;
@@ -244,7 +321,16 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
     char                * error_msg;
     mvm_asm_tokenizer_t tokenizer;
 
-    // TODO: Check for NULL pointers
+    if (!parser) {
+        
+        error_msg = 
+            "Error in mvm_asm_parse():\n" \
+            "  Parser pointer should not be NULL.\n";
+
+        fprintf(stderr, error_msg, 0);
+
+        return 0;
+    }
 
     if (parser->status != MVM_AES_INIT) {
         
@@ -264,7 +350,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
             "  Something unexpected happened while initializing tokenizer.\n";
 
         fprintf(stderr, error_msg, 0);
-        
+
         return -1;
 
     }
