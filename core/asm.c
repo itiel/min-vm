@@ -22,13 +22,27 @@ int main (int argc, char const ** argv) {
 
         if (buff_len < 0) {
 
+            // Handle error
+
             return 1;
 
         }
 
-        mvm_asm_parser_init(&parser, buffer, buff_len, tokens, TOKLISTSIZE);
+        if (!mvm_asm_parser_init(&parser, buffer, buff_len, tokens, TOKLISTSIZE)) {
 
-        mvm_asm_parse(&parser);
+            // Handle error
+
+            return 1;
+
+        }
+
+        if (!mvm_asm_parse(&parser)) {
+
+            // Handle error
+
+            return 1;
+
+        }
 
     }
 
