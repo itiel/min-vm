@@ -85,7 +85,7 @@ class Tokenizer:
     @unique 
     class States (Enum):
 
-        START   = 0
+        BLANK   = 0
         NAME    = 1
         NUMBER  = 2
         OCT_NUM = 3
@@ -195,7 +195,7 @@ class Tokenizer:
         tk_tps  = Token.Types
         tkr_sts = Tokenizer.States 
         
-        state = tkr_sts.START
+        state = tkr_sts.BLANK
         col   = -1
 
         # Start of file
@@ -208,7 +208,7 @@ class Tokenizer:
 
             if ch == '\n':
 
-                saved_state = tkr_sts.START
+                saved_state = tkr_sts.BLANK
                 saved_int   = col
                 on_break    = True
                 on_sep      = True
@@ -217,7 +217,7 @@ class Tokenizer:
 
                 if ch in ' \t':
                     
-                    saved_state = tkr_sts.START
+                    saved_state = tkr_sts.BLANK
                     on_sep      = True
 
                 elif ch in '+-':
@@ -256,7 +256,7 @@ class Tokenizer:
 
             # First iteration or after space or tab
 
-            if state == tkr_sts.START:
+            if state == tkr_sts.BLANK:
 
                 if on_sep:
 
@@ -576,7 +576,7 @@ class Tokenizer:
 
                     yield Token(tk_row, tk_col, tk_type, tk_str)
 
-                    state = tkr_sts.START
+                    state = tkr_sts.BLANK
 
                     continue
 

@@ -15,37 +15,47 @@
 
 /* -- Defines -- */
 
-/*
- . ch_is_alph    : a-Z
- . ch_is_dig     : 0-9
- . ch_is_alphnum : a-Z || 0-9
- . ch_is_hex     : 0-9 || a-F 
- . ch_is_oct     : 0-7
-*/
+// Character validation macros
 
-#define ch_is_alph    (_ch) \
+// ch_is_alph      : a-Z
+// ch_is_dig       : 0-9
+// ch_is_alphnum   : a-Z || 0-9
+// ch_is_name_lead : _ || a-Z 
+// ch_is_name      : _ || a-Z || 0-9
+// ch_is_hex       : 0-9 || a-F 
+// ch_is_oct       : 0-7
+
+#define ch_is_alph      (_ch) \
     ((_ch >= 'a' and _ch <= 'z') || (_ch >= 'A' and _ch <= 'Z')) 
-#define ch_is_dig     (_ch) (_ch >= '0' && _ch <= '9' )
-#define ch_is_alphnum (_ch) (ch_is_alph (_ch) || ch_is_dig (_ch))
-#define ch_is_hex     (_ch) \
+#define ch_is_dig       (_ch) \
+    (_ch >= '0' && _ch <= '9' )
+#define ch_is_alphnum   (_ch) \
+    (ch_is_alph(_ch) || ch_is_dig(_ch))
+#define ch_is_name_lead (_ch) \
+    (_ch == '_' || ch_is_alph(_ch))
+#define ch_is_name      (_ch) \
+    (_ch == '_' || ch_is_alphnum(_ch))
+#define ch_is_hex       (_ch) \
     (ch_is_dig(_ch) || (_ch >= 'a' && _ch <= 'f') || (_ch >= 'A' && _ch <= 'F'))
-#define ch_is_oct     (_ch) (_ch >= '0' && _ch <= '7')
+#define ch_is_oct       (_ch) \
+    (_ch >= '0' && _ch <= '7')
 
-/* 
- . These next 2 are to be used by mvm_asm_token_new() 
- . _toknxt() increments 1 to token_list_len
-*/
+// These next 2 are to be used by mvm_asm_token_new() 
 
 #define _toklstszex(_tknzr) \
     (_tknzr->parser->token_list_len + 1 > _tknzr->parser->token_list_size)
 
+// _toknxt() increments 1 to token_list_len
+
 #define _toknxt(_tknzr) \
     (&(_tknzr->parser->token_list[_tknzr->parser->token_list_len++]))
 
-/* -- Types -- */
+/* -- Types & Enums -- */
 
 typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
 typedef struct mvm_asm_parser_t mvm_asm_parser_t;
+
+// Token types
 
 typedef enum {
 
@@ -72,6 +82,8 @@ typedef struct mvm_asm_token_t {
 
 } mvm_asm_token_t;
 
+// Tokenizer and Parser elements use this enum 
+
 typedef enum {
 
     MVM_AES_END,
@@ -80,6 +92,8 @@ typedef enum {
 
 } mvm_asm_elm_status_t;
 
+// Tokenizer
+
 typedef struct mvm_asm_tokenizer_t {
 
     mvm_asm_parser_t * parser;
@@ -87,6 +101,8 @@ typedef struct mvm_asm_tokenizer_t {
     i8               status;
 
 } mvm_asm_tokenizer_t;
+
+// Parser
 
 typedef struct mvm_asm_parser_t {
  
@@ -101,36 +117,7 @@ typedef struct mvm_asm_parser_t {
 
 /* -- Functions -- */
 
-i8 * mvm_asm_token_typename (i8 tok_type) {
-    switch (tok_type) {                        
-        case MVM_ATT_START:   return "START";
-        case MVM_ATT_NAME:    return "NAME";
-        case MVM_ATT_SIGN:    return "SIGN";
-        case MVM_ATT_NUMBER:  return "NUMBER";
-        case MVM_ATT_STRING:  return "STRING";
-        case MVM_ATT_CHAR:    return "CHAR";
-        case MVM_ATT_COMMENT: return "COMMENT";
-        case MVM_ATT_BREAK:   return "BREAK";
-        case MVM_ATT_END:     return "END";
-        default:              return "N/A";                        
-    }
-}
-
-i8 mvm_asm_token_show (mvm_asm_token_t * token) {
-
-    printf(
-        "<Token row: %ld\tcol: %ld\tstart: %ld\tlen: %ld\ttype: %s\tstr: ",
-        token->row, token->col, token->start, token->len,
-        mvm_asm_token_typename(token->type)
-    );
-
-    // TODO: Show the string of the token
-
-    printf(">\n");
-
-    return 1;
-
-}
+// Token methods
 
 i8 mvm_asm_token_new (
     mvm_asm_tokenizer_t * tokenizer,
@@ -167,6 +154,41 @@ i8 mvm_asm_token_new (
     return 1;
 
 }
+
+i8 * mvm_asm_token_typename (i8 tok_type) {
+    
+    switch (tok_type) {                        
+        case MVM_ATT_START:   return "START";
+        case MVM_ATT_NAME:    return "NAME";
+        case MVM_ATT_SIGN:    return "SIGN";
+        case MVM_ATT_NUMBER:  return "NUMBER";
+        case MVM_ATT_STRING:  return "STRING";
+        case MVM_ATT_CHAR:    return "CHAR";
+        case MVM_ATT_COMMENT: return "COMMENT";
+        case MVM_ATT_BREAK:   return "BREAK";
+        case MVM_ATT_END:     return "END";
+        default:              return "N/A";                        
+    }
+
+}
+
+i8 mvm_asm_token_show (mvm_asm_token_t * token) {
+
+    printf(
+        "<Token row: %ld\tcol: %ld\tstart: %ld\tlen: %ld\ttype: %s\tstr: ",
+        token->row, token->col, token->start, token->len,
+        mvm_asm_token_typename(token->type)
+    );
+
+    // TODO: Show the string of the token
+
+    printf(">\n");
+
+    return 1;
+
+}
+
+// Tokenizer methods
 
 i8 mvm_asm_tokenizer_init (
     mvm_asm_tokenizer_t * tokenizer, 
@@ -280,6 +302,8 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
 }
 
+// Parser methods
+
 i8 mvm_asm_parser_init ( 
     mvm_asm_parser_t * parser, 
     i8               * src, 
@@ -387,4 +411,4 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
 }
 
-#endif /* #ifndef _ASM_H_ */
+#endif /* #ifndef _ASM_H_ 
