@@ -45,17 +45,16 @@
 i64 file2buff (i8 * file_name, i8 * buffer, i64 buff_size) {
     
     FILE * file;
-    i8 * error_msg;
     i64 buff_len = 0;
     i8 ch;
 
     if (buff_size < 0) {
-        
-        error_msg = 
-            "Error in file2buff():\n" \
-            "  Buffer size cannot be lower than 0 (%d).\n";
 
-        fprintf(stderr, error_msg, buff_size);
+        fprintf(stderr, 
+            "Error in file2buff():\n" \
+            "  Buffer size cannot be lower than 0 (%ld).\n", 
+            buff_size
+        );
         
         return -1;
 
@@ -63,11 +62,11 @@ i64 file2buff (i8 * file_name, i8 * buffer, i64 buff_size) {
 
     if (!(file = fopen(file_name, "rb"))) {
 
-        error_msg = 
+        fprintf(stderr, 
             "Error in file2buff():\n" \
-            "  No such file or directory (%s).\n";
-
-        fprintf(stderr, error_msg, file_name);
+            "  No such file or directory (%s).\n", 
+            file_name
+        );
 
         return -1;
 
@@ -79,11 +78,11 @@ i64 file2buff (i8 * file_name, i8 * buffer, i64 buff_size) {
         
         fclose(file);
 
-        error_msg = 
+        fprintf(stderr, 
             "Error in file2buff():\n" \
-            "  File size needed exceeds buffer size (%ld).\n";
-
-        fprintf(stderr, error_msg, buff_size);
+            "  File size needed exceeds buffer size (%ld).\n", 
+            buff_size
+        );
 
         return -1;
     }
