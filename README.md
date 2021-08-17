@@ -13,7 +13,9 @@ An experimental VM hand-crafted with love. ❤
 
 **min-vm** represents my own attempt 💪 at understanding the subject of virtual machines. 
 
-I had heard about systems that function on their own VMs (like Java ☕ or Python 🐍), but I hadn't really understood how or why that was, nor did I really care. But then I found some examples of individuals who built their own physical CPUs on breadboards or wrote their own custom VMs in C or something. *That's when* I got interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too.  
+I had heard about systems that function on their own VMs (like Java ☕ or Python 🐍, and I think V8 too 🤷‍♂️), but I hadn't really understood how or why that was, nor did I really care. But then I found about people who wrote their own **OS** or **kernel**, some who wrote their own **VM** or **assembler**, and some even built their own **physical CPUs on breadboards** (what⁉). Now, ***that*** got me interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too.
+
+So, welcome to The Internet, have a look around. 🎶😎
 
 ## The VM ⚙
 
