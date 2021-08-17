@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 
-#include <util/er.h>
+#include <util/err.h>
 #include <util/fwn.h>
 #include <util/f2b.h>
 
@@ -259,6 +259,8 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
     i8 ch;
     i8 tkr_state;
 
+    i64 cur_col;
+    i64 tok_col;
     i8 tok_type;
 
     if (tokenizer->status != MVM_AES_INIT) {
@@ -273,6 +275,8 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     tokenizer->status = MVM_AES_IN_USE;
 
+    tokenizer_start: // Start of tokenizing process
+
     // Append file start token before scanning
 
     tok_type = MVM_ATT_START;
@@ -283,11 +287,15 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     } 
 
+    cur_col = -1;
+
     tkr_state = MVM_ATS_BLANK;
 
     next_token: // Kinda like 'continue'
 
     while (ch = tokenizer->parser->file_txt[++tokenizer->ch_idx]) {
+
+        cur_col++;
 
         redo_char: // Re-eval char but with diff state
 
@@ -339,15 +347,15 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
         }
 
-        if (0) {
+        // if (0) {
 
-            if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
+        //     if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
 
-                goto new_tok_err;
+        //         goto new_tok_err;
 
-            }
+        //     }
 
-        }
+        // }
 
     }
 

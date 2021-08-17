@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "er.h"
+#include "err.h"
 #include "fwn.h"
 
 /* -- Definitions -- */
