@@ -11,7 +11,7 @@
 /*
  . I know there might be a better way to do this.
  . This is just so I don't repeat myself so much
- . as I was with the old way
+ . as I was with the old way.
 */
 
 #define put_error(method_name, error_msg, ...) {          \
