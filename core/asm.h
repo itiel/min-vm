@@ -26,19 +26,25 @@
 // ch_is_hex       : 0-9 || a-F 
 // ch_is_oct       : 0-7
 
-#define ch_is_alph      (_ch) \
-    ((_ch >= 'a' and _ch <= 'z') || (_ch >= 'A' and _ch <= 'Z')) 
-#define ch_is_dig       (_ch) \
+#define      ch_is_alph(_ch) \
+    ((_ch >= 'a' && _ch <= 'z') || (_ch >= 'A' && _ch <= 'Z')) 
+
+#define       ch_is_dig(_ch) \
     (_ch >= '0' && _ch <= '9' )
-#define ch_is_alphnum   (_ch) \
+
+#define   ch_is_alphnum(_ch) \
     (ch_is_alph(_ch) || ch_is_dig(_ch))
-#define ch_is_name_lead (_ch) \
+
+#define ch_is_name_lead(_ch) \
     (_ch == '_' || ch_is_alph(_ch))
-#define ch_is_name      (_ch) \
+
+#define      ch_is_name(_ch) \
     (_ch == '_' || ch_is_alphnum(_ch))
-#define ch_is_hex       (_ch) \
+
+#define       ch_is_hex(_ch) \
     (ch_is_dig(_ch) || (_ch >= 'a' && _ch <= 'f') || (_ch >= 'A' && _ch <= 'F'))
-#define ch_is_oct       (_ch) \
+
+#define       ch_is_oct(_ch) \
     (_ch >= '0' && _ch <= '7')
 
 // These next 2 are to be used by mvm_asm_token_new() 
@@ -254,14 +260,32 @@ i8 mvm_asm_tokenizer_init (
 
 }
 
+i8 mvm_asm_tokenize_error (
+    mvm_asm_tokenizer_t * tokenizer, 
+    i8                  * reason) 
+{
+
+    put_error_method(
+        "mvm_asm_tokenize",
+        "%s",
+        reason
+    );
+
+    return 0;
+
+}
+
 i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
-    i8 ch;
-    i8 tkr_state;
-
+    i8  ch;
+    
     i64 cur_col;
+    i8  cur_state;
+
     i64 tok_col;
-    i8 tok_type;
+    i8  tok_type;
+
+    // Check for initialized token
 
     if (tokenizer->status != MVM_AES_INIT) {
 
@@ -275,9 +299,16 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     tokenizer->status = MVM_AES_IN_USE;
 
-    tokenizer_start: // Start of tokenizing process
+    // Start of tokenizing process
 
-    // Append file start token before scanning
+    tokenizer_start: 
+
+    // Initialize loop variables
+
+    cur_col   = -1;
+    cur_state = MVM_ATS_BLANK;
+
+    // Append file-start token before scanning
 
     tok_type = MVM_ATT_START;
 
@@ -287,10 +318,6 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     } 
 
-    cur_col = -1;
-
-    tkr_state = MVM_ATS_BLANK;
-
     next_token: // Kinda like 'continue'
 
     while (ch = tokenizer->parser->file_txt[++tokenizer->ch_idx]) {
@@ -299,13 +326,34 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
         redo_char: // Re-eval char but with diff state
 
-        switch (tkr_state) {
+        switch (cur_state) {
             
             case MVM_ATS_BLANK:
+
+                if (ch_is_name_lead(ch)) {
+                    
+                    cur_state = MVM_ATS_NAME;
+                    tok_col   = cur_col;
+                    tok_type  = MVM_ATT_NAME;
+
+                    continue;
+                
+                }
 
                 break;
 
             case MVM_ATS_NAME:
+
+                if (ch_is_name(ch)) {
+                    
+                    continue;
+                
+                }
+
+                return mvm_asm_tokenize_error(
+                    tokenizer,
+                    "Invalid name syntax"
+                );
 
                 break;
 
