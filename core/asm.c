@@ -22,7 +22,10 @@ int main (int argc, char const ** argv) {
 
         if (buff_len < 0) {
 
-            // Handle error
+            put_error_method( 
+                "main", 
+                "Something unexpected happened while loading file to buffer."
+            );
 
             return 1;
 
@@ -30,7 +33,10 @@ int main (int argc, char const ** argv) {
 
         if (!mvm_asm_parser_init(&parser, buffer, buff_len, tokens, TOKLISTSIZE)) {
 
-            // Handle error
+            put_error_method( 
+                "main", 
+                "Something unexpected happened while initializing parser."
+            );
 
             return 1;
 
@@ -38,7 +44,10 @@ int main (int argc, char const ** argv) {
 
         if (!mvm_asm_parse(&parser)) {
 
-            // Handle error
+            put_error_method( 
+                "main", 
+                "Something unexpected happened while parsing file."
+            );
 
             return 1;
 

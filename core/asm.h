@@ -43,12 +43,14 @@
 
 // These next 2 are to be used by mvm_asm_token_new() 
 
-#define _toklstszex(_tknzr) \
+// Check if we have enough space in token_list
+
+#define _toklst_nospace(_tknzr) \
     (_tknzr->parser->token_list_len + 1 > _tknzr->parser->token_list_size)
 
-// _toknxt() increments 1 to token_list_len
+// _tok_next() increments 1 to token_list_len
 
-#define _toknxt(_tknzr) \
+#define _tok_next(_tknzr) \
     (&(_tknzr->parser->token_list[_tknzr->parser->token_list_len++]))
 
 /* -- Types & Enums -- */
@@ -146,9 +148,9 @@ i8 mvm_asm_token_new (
 
     mvm_asm_token_t * new_token;
 
-    if (_toklstszex(tokenizer)) {
+    if (_toklst_nospace(tokenizer)) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_token_new", 
             "Token list size needed exceeds actual size (%ld).", 
             tokenizer->parser->token_list_size
@@ -158,7 +160,7 @@ i8 mvm_asm_token_new (
 
     }
 
-    new_token = _toknxt(tokenizer);
+    new_token = _tok_next(tokenizer);
 
     new_token->tokenizer = tokenizer;
     new_token->row       = row;
@@ -213,7 +215,7 @@ i8 mvm_asm_tokenizer_init (
 
     if (!tokenizer) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_tokenizer_init", 
             "Tokenizer pointer should not be NULL."
         );
@@ -223,7 +225,7 @@ i8 mvm_asm_tokenizer_init (
 
     if (!parser) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_tokenizer_init", 
             "Parser pointer should not be NULL."
         );
@@ -233,7 +235,7 @@ i8 mvm_asm_tokenizer_init (
 
     if (parser->status != MVM_AES_INIT) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_tokenizer_init", 
             "Parser element needs to be initialized."
         );
@@ -258,7 +260,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     if (tokenizer->status != MVM_AES_INIT) {
 
-        put_error( 
+        put_error_method( 
             "mvm_asm_tokenize", 
             "Tokenizer element needs to be initialized."
         );
@@ -272,7 +274,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_START)) {
 
-        put_error( 
+        put_error_method( 
             "mvm_asm_tokenize", 
             "Something unexpected happened while generating new token."
         );
@@ -339,7 +341,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
             if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_START)) {
 
-                put_error( 
+                put_error_method( 
                     "mvm_asm_tokenize", 
                     "Something unexpected happened while generating new token."
                 );
@@ -356,7 +358,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_END)) {
 
-        put_error( 
+        put_error_method( 
             "mvm_asm_tokenize", 
             "Something unexpected happened while generating new token."
         );
@@ -383,7 +385,7 @@ i8 mvm_asm_parser_init (
 
     if (!parser) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_parser_init", 
             "Parser pointer should not be NULL."
         );
@@ -393,7 +395,7 @@ i8 mvm_asm_parser_init (
 
     if (!src) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_parser_init", 
             "Source string pointer should not be NULL."
         );
@@ -403,7 +405,7 @@ i8 mvm_asm_parser_init (
 
     if (!token_list) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_parser_init", 
             "Token list pointer should not be NULL."
         );
@@ -428,7 +430,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
     if (!parser) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_parse", 
             "Parser pointer should not be NULL."
         );
@@ -438,7 +440,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
     if (parser->status != MVM_AES_INIT) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_parse", 
             "Parser element needs to be initialized."
         );
@@ -448,7 +450,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
     if (!mvm_asm_tokenizer_init(&tokenizer, parser)) {
 
-        put_error( 
+        put_error_method( 
             "mvm_asm_parse", 
             "Something unexpected happened while initializing tokenizer."
         );
@@ -459,7 +461,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
     if (!mvm_asm_tokenize(&tokenizer)) {
         
-        put_error( 
+        put_error_method( 
             "mvm_asm_parse", 
             "Something unexpected happened while tokenizing file."
         );

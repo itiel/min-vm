@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "er.h"
 #include "fwn.h"
 
 /* -- Definitions -- */
@@ -50,9 +51,9 @@ i64 file2buff (i8 * file_name, i8 * buffer, i64 buff_size) {
 
     if (buff_size < 0) {
 
-        fprintf(stderr, 
-            "Error in file2buff():\n" \
-            "  Buffer size cannot be lower than 0 (%ld).\n", 
+        put_error_method( 
+            "file2buff",
+            "Buffer size cannot be lower than 0 (%ld).", 
             buff_size
         );
         
@@ -62,9 +63,9 @@ i64 file2buff (i8 * file_name, i8 * buffer, i64 buff_size) {
 
     if (!(file = fopen(file_name, "rb"))) {
 
-        fprintf(stderr, 
-            "Error in file2buff():\n" \
-            "  No such file or directory (%s).\n", 
+        put_error_method( 
+            "file2buff",
+            "No such file or directory (%s).", 
             file_name
         );
 
@@ -78,9 +79,9 @@ i64 file2buff (i8 * file_name, i8 * buffer, i64 buff_size) {
         
         fclose(file);
 
-        fprintf(stderr, 
-            "Error in file2buff():\n" \
-            "  File size needed exceeds buffer size (%ld).\n", 
+        put_error_method( 
+            "file2buff",
+            "File size needed exceeds buffer size (%ld).", 
             buff_size
         );
 

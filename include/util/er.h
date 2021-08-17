@@ -14,7 +14,13 @@
  . as I was with the old way.
 */
 
-#define put_error(method_name, error_msg, ...) {          \
+#define put_error(error_msg, ...) {                       \
+    fprintf(stderr, "Error:\n  ");                        \
+    fprintf(stderr, error_msg __VA_OPT__(, __VA_ARGS__)); \
+    fprintf(stderr, "\n");                                \
+}
+
+#define put_error_method(method_name, error_msg, ...) {   \
     fprintf(stderr, "Error in %s():\n  ", method_name);   \
     fprintf(stderr, error_msg __VA_OPT__(, __VA_ARGS__)); \
     fprintf(stderr, "\n");                                \
