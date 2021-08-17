@@ -124,8 +124,9 @@ typedef struct mvm_asm_tokenizer_t {
 
 typedef struct mvm_asm_parser_t {
  
-    i8              * src; 
-    i64             src_len;
+    i8              * file_txt; 
+    i64             file_txt_len;
+    i8              * file_name; 
     mvm_asm_token_t * token_list; 
     i64             token_list_len;
     i64             token_list_size;
@@ -256,7 +257,9 @@ i8 mvm_asm_tokenizer_init (
 i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     i8 ch;
-    i8 state;
+    i8 tkr_state;
+
+    i8 tok_type;
 
     if (tokenizer->status != MVM_AES_INIT) {
 
@@ -272,24 +275,23 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     // Append file start token before scanning
 
-    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_START)) {
+    tok_type = MVM_ATT_START;
 
-        put_error_method( 
-            "mvm_asm_tokenize", 
-            "Something unexpected happened while generating new token."
-        );
-        
-        return 0;
+    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
+
+        goto new_tok_err;
 
     } 
 
-    state = MVM_ATS_BLANK;
+    tkr_state = MVM_ATS_BLANK;
 
-    while (ch = tokenizer->parser->src[++tokenizer->ch_idx]) {
+    next_token: // Kinda like 'continue'
+
+    while (ch = tokenizer->parser->file_txt[++tokenizer->ch_idx]) {
 
         redo_char: // Re-eval char but with diff state
 
-        switch (state) {
+        switch (tkr_state) {
             
             case MVM_ATS_BLANK:
 
@@ -339,14 +341,9 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
         if (0) {
 
-            if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_START)) {
+            if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
 
-                put_error_method( 
-                    "mvm_asm_tokenize", 
-                    "Something unexpected happened while generating new token."
-                );
-                
-                return 0;
+                goto new_tok_err;
 
             }
 
@@ -354,20 +351,26 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     }
 
-    // Append file end token after finishing 
+    // Append file-end token after finishing 
 
-    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, MVM_ATT_END)) {
+    tok_type = MVM_ATT_END;
 
-        put_error_method( 
-            "mvm_asm_tokenize", 
-            "Something unexpected happened while generating new token."
-        );
-        
-        return 0;
+    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
+
+        goto new_tok_err;
 
     }
 
     return 1;
+
+    new_tok_err: // New token error
+
+    put_error_method( 
+        "mvm_asm_tokenize", 
+        "Something unexpected happened while generating new token."
+    );
+    
+    return 0;
 
 }
 
@@ -375,8 +378,9 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
 i8 mvm_asm_parser_init ( 
     mvm_asm_parser_t * parser, 
-    i8               * src, 
-    i64              src_len, 
+    i8               * file_txt, 
+    i64              file_txt_len, 
+    i8               * file_name, 
     mvm_asm_token_t  * token_list, 
     i64              token_list_size) 
 {
@@ -393,7 +397,7 @@ i8 mvm_asm_parser_init (
         return 0;
     }
 
-    if (!src) {
+    if (!file_txt) {
         
         put_error_method( 
             "mvm_asm_parser_init", 
@@ -413,8 +417,9 @@ i8 mvm_asm_parser_init (
         return 0;
     }
 
-    parser->src             = src;
-    parser->src_len         = src_len;
+    parser->file_txt        = file_txt;
+    parser->file_txt_len    = file_txt_len;
+    parser->file_name       = file_name;
     parser->token_list      = token_list;
     parser->token_list_len  = 0;
     parser->token_list_size = token_list_size;
@@ -463,7 +468,8 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
         
         put_error_method( 
             "mvm_asm_parse", 
-            "Something unexpected happened while tokenizing file."
+            "Something unexpected happened while tokenizing file (%s).",
+            tokenizer.parser->file_name
         );
         
         return -1;
