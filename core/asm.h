@@ -28,22 +28,16 @@
 
 #define      ch_is_alph(_ch) \
     ((_ch >= 'a' && _ch <= 'z') || (_ch >= 'A' && _ch <= 'Z')) 
-
 #define       ch_is_dig(_ch) \
     (_ch >= '0' && _ch <= '9' )
-
 #define   ch_is_alphnum(_ch) \
     (ch_is_alph(_ch) || ch_is_dig(_ch))
-
 #define ch_is_name_lead(_ch) \
     (_ch == '_' || ch_is_alph(_ch))
-
 #define      ch_is_name(_ch) \
     (_ch == '_' || ch_is_alphnum(_ch))
-
 #define       ch_is_hex(_ch) \
     (ch_is_dig(_ch) || (_ch >= 'a' && _ch <= 'f') || (_ch >= 'A' && _ch <= 'F'))
-
 #define       ch_is_oct(_ch) \
     (_ch >= '0' && _ch <= '7')
 
@@ -271,6 +265,8 @@ i8 mvm_asm_tokenize_error (
         reason
     );
 
+    // eputchar(ch);
+
     return 0;
 
 }
@@ -318,7 +314,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     } 
 
-    next_token: // Kinda like 'continue'
+    next_ch: // Kinda like 'continue'
 
     while (ch = tokenizer->parser->file_txt[++tokenizer->ch_idx]) {
 

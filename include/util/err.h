@@ -14,6 +14,8 @@
  . as I was with the old way.
 */
 
+#define eputchar(ch) putc(ch, stderr)
+
 #define eprintf(format, ...) \
     fprintf(stderr, format __VA_OPT__(, __VA_ARGS__))
 
