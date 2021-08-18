@@ -1,21 +1,21 @@
 [//]: # (Author: Itiel Lopez - itiel@soyitiel.com)
 [//]: # (Created: 05/08/2021)
-[//]: # (Last updated: 11/08/2021)
 
 # Welcome to min-vm
-An experimental VM hand-crafted with love. ❤
 
-> **⚠ Warning:** Most of this file is a draft. May contain inaccurate information. Read with caution.
+An experimental VM hand-crafted with love. :heart:
 
-## Intro 🌟
+> :warning: **Warning:** Most of this document is a draft. May contain inaccurate information. Read with caution.
+
+## Intro :star2:
 
 > Please excuse my english, it isn't my first language. Thank you. 🙏
 
-**min-vm** represents my own attempt 💪 at understanding the subject of virtual machines. 
+**min-vm** represents my own attempt :muscle: at understanding the subject of virtual machines. 
 
-I had heard about systems that function on their own VMs (like Java ☕ or Python 🐍, and I think V8 or Node 🤷‍♂️ idk), but I hadn't really understood how or why that was, nor did I really care. But then I found about people who wrote their own **OS** or **kernel**, some who wrote their own **VM** or **assembler**, and some even built their own **physical CPUs on breadboards** (what⁉). Now, ***that*** got me interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too.
+I had heard about systems that function on their own VMs (like Java :coffee: or Python :snake:, and I think V8 or Node 🤷‍♂️ idk), but I hadn't really understood how or why that was, nor did I really care. But then I found about people who wrote their own **OS** or **kernel**, some who wrote their own **VM** or **assembler**, and some even built their own **physical CPUs on breadboards** (what⁉). Now, ***that*** got me interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too.
 
-So, welcome to The Internet, have a look around. 🎶😎
+So, *welcome to The Internet, have a look around*. 🎶😎
 
 ## The VM ⚙
 
@@ -31,10 +31,10 @@ By convention, instruction names are at least 2 and not more than 4 characters l
 
 The following is a list of the instructions the assembler is (or will be) able to interpret.
 
-| Opcode   | Instruction Name                                       | Description                                                 |
+| Opcode   | Instruction Name(s)                                    | Description                                                 |
 | :------: | :----------------------------------------------------- | :----------------------------------------------------       |
 |   `00`   | `nop`, `noop`, `nope`                                  | No operation                                                |
-| | ***Data***                                                                                                                    |
+|          | ***Data***                                                                                                           |
 |   `20`   | `ld #val`, `lda #val`                                  | Load value to ***a***                                       |
 |   `21`   | `ldb #val`                                             | Load value to ***b***                                       |
 |   `22`   | `ldc #val`                                             | Load value to ***c***                                       |
@@ -47,10 +47,10 @@ The following is a list of the instructions the assembler is (or will be) able t
 |   `29`   | `lca`, `ldca`                                          | Load data from ***c*** to ***a***                           |
 |   `2A`   | `lcb`, `ldcb`                                          | Load data from ***c*** to ***b***                           |
 |   `2B`   | `lcc`, `ldcc`                                          | Load data from ***c*** to ***c***                           |
-| | ***Logic***                                                                                                                   |
+|          | ***Logic***                                                                                                          |
 |   `40`   | `and`, `cmp`, `comp`                                   | Compare ***a*** to ***b*** and store result in ***c***      |
-|   `41`   | `xor`, `xr`                                            | Exclusive-or ***a*** to ***b*** and store result in ***c*** |
-| | ***Arithmetics***                                                                                                             |
+|   `41`   | `exor`, `eor`, `xor`, `xo`, `xr`                       | Exclusive-or ***a*** to ***b*** and store result in ***c*** |
+|          | ***Arithmetics***                                                                                                    |
 |   `60`   | `add`, `ad`, `sum`, `sm`, `addc`, `adc`, `sumc`, `smc` | Add ***a*** plus ***b*** and store result in ***c***        |
 |   `61`   | `adda`, `ada`, `suma`, `sma`                           | Add ***a*** plus ***b*** and store result in ***a***        |
 |   `62`   | `addb`, `adb`, `sumb`, `smb`                           | Add ***a*** plus ***b*** and store result in ***b***        |
@@ -63,13 +63,13 @@ The following is a list of the instructions the assembler is (or will be) able t
 |   `69`   | `mult`, `mlt`, `mul`, `ml`, `mltc`, `mulc`, `mlc`      | Multiply ***a*** by ***b*** and store result in ***c***     |
 |   `6A`   | `mlta`, `mula`, `mla`                                  | Multiply ***a*** by ***b*** and store result in ***a***     |
 |   `6B`   | `mltb`, `mulb`, `mlb`                                  | Multiply ***a*** by ***b*** and store result in ***b***     |
-| | ***Halt***                                                                                                                    |
+|          | ***Halt***                                                                                                           |
 |   `FF`   | `halt`, `hlt`, `stop`, `stp`                           | Stop simulation                                             |
 
 ## Useful resources
 
 [🚧 Some description]
 
-### Sources of inspiraton
+### Sources of inspiration
 
 [🚧 Some description]
