@@ -13,7 +13,7 @@
  .    Hex
  .  Opcode | Instruction Name(s)                    | Description
  . --------+----------------------------------------+-------------------------------------------
- .     00  | nop, noop, nope                        | No operation
+ .     00  | nop, noop, nope, np                    | No operation
  .  Data
  .     20  | ld #val, lda #val                      | Load value to a
  .     21  | ldb #val                               | Load value to b

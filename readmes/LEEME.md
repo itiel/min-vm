@@ -33,7 +33,7 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podr�
 
 | C처digo OP | Nombre(s) de la Instrucci처n                            | Descripci처n                                                                   |
 | :-------: | :----------------------------------------------------- | :---------------------------------------------------------------------------- |
-|    `00`   | `nop`, `noop`, `nope`                                  | Ninguna operaci처n                                                             |
+|    `00`   | `nop`, `noop`, `nope`, `np`                            | Ninguna operaci처n                                                             |
 |           | ***Datos***                                                                                                                            |
 |    `20`   | `ld #val`, `lda #val`                                  | Cargar un valor a ***a***                                                     |
 |    `21`   | `ldb #val`                                             | Cargar un valor a ***b***                                                     |
