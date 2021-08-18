@@ -112,11 +112,18 @@ typedef enum {
 
 } mvm_asm_tokenizer_state_t;
 
+typedef struct mvm_asm_tokenizer_data_t {
+
+    i64              ch_idx;
+    i64              last_break;
+
+} mvm_asm_tokenizer_data_t;
+
 typedef struct mvm_asm_tokenizer_t {
 
-    mvm_asm_parser_t * parser;
-    i64              ch_idx;
-    i8               status;
+    mvm_asm_parser_t         * parser;
+    mvm_asm_tokenizer_data_t data;
+    i8                       status;
 
 } mvm_asm_tokenizer_t;
 
@@ -246,9 +253,10 @@ i8 mvm_asm_tokenizer_init (
 
     parser->status = MVM_AES_IN_USE;
 
-    tokenizer->parser = parser;
-    tokenizer->ch_idx = -1;
-    tokenizer->status = MVM_AES_INIT;
+    tokenizer->parser     = parser;
+    tokenizer->data.ch_idx     = -1;
+    tokenizer->data.last_break = 0;
+    tokenizer->status     = MVM_AES_INIT;
 
     return 1;
 
@@ -257,13 +265,19 @@ i8 mvm_asm_tokenizer_init (
 i8 mvm_asm_tokenize_error (
     mvm_asm_tokenizer_t * tokenizer, 
     i8                  * reason) 
-{
+{   
 
-    put_error_method(
-        "mvm_asm_tokenize",
-        "%s",
+    i64 row = 0, col = 0;
+
+    eprintf(
+        "Error @ (%ld:%ld) in file -> %s:\n" \
+        "  %s\n",
+        row + 1, col + 1,
+        tokenizer->parser->file_name,
         reason
     );
+
+    // TODO: Show line and arrow and replace '\t' with ' ' 
 
     // eputchar(ch);
 
@@ -316,7 +330,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     next_ch: // Kinda like 'continue'
 
-    while (ch = tokenizer->parser->file_txt[++tokenizer->ch_idx]) {
+    while (ch = tokenizer->parser->file_txt[++tokenizer->data.ch_idx]) {
 
         cur_col++;
 
