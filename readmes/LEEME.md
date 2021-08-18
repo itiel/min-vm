@@ -7,7 +7,7 @@
 
 Una máquina virtual (MV) experimental hecha con amor. :heart:
 
-* [Read this document in english :england:](../README.md)
+* [Read this document in english :uk:](../README.md)
 
 ## Introducción :star2:
 

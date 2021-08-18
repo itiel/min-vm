@@ -10,9 +10,8 @@
 
 #include <stdio.h>
 
-#include <util/err.h>
 #include <util/fwn.h>
-#include <util/f2b.h>
+#include <util/err.h>
 
 /* -- Defines -- */
 
