@@ -1,31 +1,33 @@
 [//]: # (Author: Itiel Lopez - itiel@soyitiel.com)
 [//]: # (Created: 05/08/2021)
 
+> :warning: **Warning:** Most of this document is a draft. May contain inaccurate information. Read with caution.
+
 # Welcome to min-vm
 
 An experimental VM hand-crafted with love. :heart:
 
-> :warning: **Warning:** Most of this document is a draft. May contain inaccurate information. Read with caution.
+* [Leer este documento en español :mexico:](readmes/LEEME.md)
 
 ## Intro :star2:
 
-> Please excuse my english, it isn't my first language. Thank you. 🙏
+> Please excuse my english, it isn't my first language. Thank you. :pray:
 
 **min-vm** represents my own attempt :muscle: at understanding the subject of virtual machines. 
 
-I had heard about systems that function on their own VMs (like Java :coffee: or Python :snake:, and I think V8 or Node 🤷‍♂️ idk), but I hadn't really understood how or why that was, nor did I really care. But then I found about people who wrote their own **OS** or **kernel**, some who wrote their own **VM** or **assembler**, and some even built their own **physical CPUs on breadboards** (what⁉). Now, ***that*** got me interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too.
+I had heard about systems that function on their own VMs (like Java :coffee: or Python :snake:, and I think V8 or Node :man_shrugging: idk), but I hadn't really understood how or why that was, nor did I really care. But then I found about people who wrote their own **OS** or **kernel**, some who wrote their own **VM** or **assembler**, and some even built their own **physical CPUs on breadboards** (what⁉). Now, ***that*** got me interested. It was as if, now that I knew a mere mortal like me could do something like that with such little requirements, then I ***should*** do it too.
 
-So, *welcome to The Internet, have a look around*. 🎶😎
+So, *welcome to The Internet, have a look around*. :notes::sunglasses:
 
-## The VM ⚙
+## The VM :gear:
 
-[🚧 Some description]
+[:construction: Some description]
 
-## The compiler ✍
+## The compiler :writing_hand:
 
-Technically an assembler, not a compiler, but it sounds *way cooler*. 😎 
+Technically an assembler, not a compiler, but it sounds *way cooler*. :sunglasses: 
 
-### The instruction set 🧬
+### The instruction set :dna:
 
 By convention, instruction names are at least 2 and not more than 4 characters long.
 
@@ -68,8 +70,8 @@ The following is a list of the instructions the assembler is (or will be) able t
 
 ## Useful resources
 
-[🚧 Some description]
+[:construction: Some description]
 
 ### Sources of inspiration
 
-[🚧 Some description]
+[:construction: Some description]

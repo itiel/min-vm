@@ -1,29 +1,31 @@
 [//]: # (Author: Itiel Lopez - itiel@soyitiel.com)
 [//]: # (Created: 17/08/2021)
 
+> :warning: **Advertencia:** La mayor parte de este documento es un borrador y puede contener información incorrecta. Léalo con precaución.
+
 # Bienvenido a min-vm
 
 Una máquina virtual (MV) experimental hecha con amor. :heart:
 
-> :warning: **Advertencia:** La mayor parte de este documento es un borrador y puede contener información incorrecta. Léalo con precaución.
+* [Read this document in english :england:](../README.md)
 
 ## Introducción :star2:
 
 **min-vm** representa mi propio intento :muscle: por entender el tema de las MVs. 
 
-Había escuchado antes sobre sistemas que funcionan con su propia MV (como Java :coffee: o Python :snake:, y creo que V8 o Node también 🤷‍♂️), pero nunca había entendido cómo o por qué, ni tampoco me importaba mucho que digamos. Pero luego descubrí que hay quienes han escrito su propio **sistema operativo** o su propio **kernel**, algunos escribieron su propia **MV** y su ***assembler***, y algunos hasta construyeron su propio **procesador con protoboards** (qué⁉). ***Eso sí*** que captó mi atención. Fue com si, ahora que supe que un simple mortal como yo pudo construir algo como eso con tan pocos recursos, entonces yo ***estaba obligado*** a hacerlo también.
+Había escuchado antes sobre sistemas que funcionan con su propia MV (como Java :coffee: o Python :snake:, y creo que V8 o Node también :man_shrugging:), pero nunca había entendido cómo o por qué, ni tampoco me importaba mucho que digamos. Pero luego descubrí que hay quienes han escrito su propio **sistema operativo** o su propio **kernel**, algunos escribieron su propia **MV** y su ***assembler***, y algunos hasta construyeron su propio **procesador con protoboards** (qué⁉). ***Eso sí*** que captó mi atención. Fue com si, ahora que supe que un simple mortal como yo pudo construir algo como eso con tan pocos recursos, entonces yo ***estaba obligado*** a hacerlo también.
 
-Así que, *welcome a The Internet, have a look around*. 🎶😎
+Así que, *welcome a The Internet, have a look around*. :notes::sunglasses:
 
-## La MV ⚙
+## La MV :gear:
 
-[🚧 Cierta descripción]
+[:construction: Cierta descripción]
 
-## El compilador ✍
+## El compilador :writing_hand:
 
-Técnicamente, un ensamblador (*assembler*), no un compilador, pero se oye *mucho más padre* así. 😎 
+Técnicamente, un ensamblador (*assembler*), no un compilador, pero se oye *mucho más padre* así. :sunglasses: 
 
-### El set de instrucciones 🧬
+### El set de instrucciones :dna:
 
 Por convención, los nombres de las instrucciones deben ser de mínimo 2 y máximo 4 caracteres de largo.
 
@@ -66,8 +68,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podr�
 
 ## Fuentes útiles de información
 
-[🚧 Cierta descripción]
+[:construction: Cierta descripción]
 
 ### Fuentes de inspiración
 
-[🚧 Cierta descripción]
+[:construction: Cierta descripción]
