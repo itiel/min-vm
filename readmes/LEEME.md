@@ -13,13 +13,13 @@ Una máquina virtual (MV) experimental hecha con amor. :heart:
 
 **min-vm** representa mi propio intento :muscle: por entender el tema de las MVs. 
 
-Había escuchado antes sobre sistemas que funcionan con su propia MV (como Java :coffee: o Python :snake:, y creo que V8 o Node también :man_shrugging:), pero nunca había entendido cómo o por qué, ni tampoco me importaba mucho que digamos. Pero luego descubrí que hay quienes han escrito su propio **sistema operativo** o su propio **kernel**, algunos escribieron su propia **MV** y su ***assembler***, y algunos hasta construyeron su propio **procesador con protoboards** (qué⁉). ***Eso sí*** que captó mi atención. Fue com si, ahora que supe que un simple mortal como yo pudo construir algo como eso con tan pocos recursos, entonces yo ***estaba obligado*** a hacerlo también.
+Había escuchado antes sobre sistemas que funcionan con su propia MV (como Java :coffee: o Python :snake:, y creo que V8 o Node también :man_shrugging:), pero nunca había entendido cómo o por qué, ni tampoco me importaba mucho que digamos. Pero luego descubrí que hay quienes han escrito su propio **sistema operativo** o su propio **kernel**, algunos escribieron su propia **MV** y su ***assembler***, y algunos hasta construyeron su propio **procesador con protoboards** (qué⁉). ***Eso sí*** que captó mi atención. Fue como si, ahora que supe que un simple mortal como yo pudo construir algo de tal magnitud con tan pocos recursos, entonces yo ***estaba obligado*** a hacerlo también.
 
-Así que, *welcome a The Internet, have a look around*. :notes::sunglasses:
+Así que, *welcome to The Internet, have a look around*. :notes::sunglasses:
 
 ## La MV :gear:
 
-[:construction: Cierta descripción]
+[:construction: Descripción]
 
 ## El compilador :writing_hand:
 
@@ -68,8 +68,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podr�
 
 ## Fuentes útiles de información
 
-[:construction: Cierta descripción]
+[:construction: Descripción]
 
 ### Fuentes de inspiración
 
-[:construction: Cierta descripción]
+[:construction: Descripción]
