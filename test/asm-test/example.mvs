@@ -1,6 +1,4 @@
-; Vars
-
-a1  5
+a1  5 ; Vars
 
 _start:
 

@@ -304,7 +304,8 @@ class Tokenizer:
                 self._tokenize_error('Invalid syntax', tk_row, col)
 
             # Instruction names
-            # (maybe booleans also)
+            # (Maybe also variable names
+            # and booleans as in 'true' & 'false')
 
             elif state == tkr_sts.NAME:
 

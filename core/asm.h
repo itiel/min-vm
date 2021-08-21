@@ -76,9 +76,9 @@ typedef enum {
 typedef struct mvm_asm_token_t {
 
     mvm_asm_tokenizer_t * tokenizer;
+    i64                 start;
     i64                 row;
     i64                 col;
-    i64                 start;
     i64                 len;
     i8                  type;
 
@@ -113,8 +113,14 @@ typedef enum {
 
 typedef struct mvm_asm_tokenizer_data_t {
 
-    i64              ch_idx;
-    i64              last_break;
+    i8  cur_state;
+    i64 last_break;
+    i64 ch_idx;
+    i64 cur_col;
+    i64 cur_row;
+    i64 tok_start;
+    i64 tok_col;
+    i8  tok_type;
 
 } mvm_asm_tokenizer_data_t;
 
@@ -144,13 +150,7 @@ typedef struct mvm_asm_parser_t {
 
 // Token methods
 
-i8 mvm_asm_token_new (
-    mvm_asm_tokenizer_t * tokenizer,
-    i64                 row,
-    i64                 col,
-    i64                 start,
-    i64                 len,
-    i8                  type)
+i8 mvm_asm_token_new (mvm_asm_tokenizer_t * tokenizer)
 {
 
     mvm_asm_token_t * new_token;
@@ -170,11 +170,11 @@ i8 mvm_asm_token_new (
     new_token = _tok_next(tokenizer);
 
     new_token->tokenizer = tokenizer;
-    new_token->row       = row;
-    new_token->col       = col;
-    new_token->start     = start;
-    new_token->len       = len;
-    new_token->type      = type;
+    new_token->start     = tokenizer->data.tok_start;
+    new_token->row       = tokenizer->data.cur_row;
+    new_token->col       = tokenizer->data.tok_col;
+    new_token->len       = tokenizer->data.ch_idx - tokenizer->data.tok_start;
+    new_token->type      = tokenizer->data.tok_type;
 
     return 1;
 
@@ -252,10 +252,23 @@ i8 mvm_asm_tokenizer_init (
 
     parser->status = MVM_AES_IN_USE;
 
-    tokenizer->parser     = parser;
-    tokenizer->data.ch_idx     = -1;
+
+    tokenizer->parser = parser;
+    tokenizer->status = MVM_AES_INIT;
+
+    // Loop variables
+
+    tokenizer->data.cur_state  = MVM_ATS_BLANK;
     tokenizer->data.last_break = 0;
-    tokenizer->status     = MVM_AES_INIT;
+    tokenizer->data.ch_idx     = -1;
+    tokenizer->data.cur_col    = -1;
+    tokenizer->data.cur_row    = 0;
+
+    // Token variables
+
+    tokenizer->data.tok_start = 0;
+    tokenizer->data.tok_col   = 0;
+    tokenizer->data.tok_type  = MVM_ATT_START;
 
     return 1;
 
@@ -266,19 +279,52 @@ i8 mvm_asm_tokenize_error (
     i8                  * reason) 
 {   
 
-    i64 row = 0, col = 0;
-
     eprintf(
         "Error @ (%ld:%ld) in file -> %s:\n" \
         "  %s\n",
-        row + 1, col + 1,
+        tokenizer->data.cur_row + 1, 
+        tokenizer->data.cur_col + 1,
         tokenizer->parser->file_name,
         reason
     );
+    
+    // Print the line and point to the troubling
+    // character with an arrow
 
-    // TODO: Show line and arrow and replace '\t' with ' ' 
+    i64 line_start;
+    i64 ch_idx;
+    i64 i;
+    i8  ch;
 
-    // eputchar(ch);
+    line_start = tokenizer->data.last_break;
+
+    ch_idx = tokenizer->data.ch_idx - line_start;
+
+    // Code line
+    
+    eprintf("    "); 
+
+    for (i = 0; i < ch_idx; ++i) {
+
+        ch = tokenizer->parser->file_txt[line_start + i];
+        
+        eputchar(ch == '\t' ? ' ' : ch);
+        
+    }
+
+    eprintf("\n");
+
+    // Arrow
+    
+    eprintf("    "); 
+
+    for (i = 0; i < ch_idx; ++i) {
+
+        eputchar(' ');
+        
+    }
+
+    eprintf("^\n");
 
     return 0;
 
@@ -287,14 +333,8 @@ i8 mvm_asm_tokenize_error (
 i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     i8  ch;
-    
-    i64 cur_col;
-    i8  cur_state;
 
-    i64 tok_col;
-    i8  tok_type;
-
-    // Check for initialized token
+    // Check if initialized
 
     if (tokenizer->status != MVM_AES_INIT) {
 
@@ -308,42 +348,41 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     tokenizer->status = MVM_AES_IN_USE;
 
-    // Start of tokenizing process
-
-    tokenizer_start: 
-
-    // Initialize loop variables
-
-    cur_col   = -1;
-    cur_state = MVM_ATS_BLANK;
+    tok_start: // Start of process
 
     // Append file-start token before scanning
 
-    tok_type = MVM_ATT_START;
-
-    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
+    if(!mvm_asm_token_new(tokenizer)) {
 
         goto new_tok_err;
 
     } 
 
-    next_ch: // Kinda like 'continue'
+    scan_start: // Like continue for nested loops
 
     while (ch = tokenizer->parser->file_txt[++tokenizer->data.ch_idx]) {
 
-        cur_col++;
+        tokenizer->data.cur_col++;
 
         redo_char: // Re-eval char but with diff state
 
-        switch (cur_state) {
+        switch (tokenizer->data.cur_state) {
             
             case MVM_ATS_BLANK:
 
+                if (ch == ' ' || ch == '\t') {
+
+                    continue;
+                
+                }
+
                 if (ch_is_name_lead(ch)) {
                     
-                    cur_state = MVM_ATS_NAME;
-                    tok_col   = cur_col;
-                    tok_type  = MVM_ATT_NAME;
+                    tokenizer->data.cur_state = MVM_ATS_NAME;
+                    
+                    tokenizer->data.tok_start = tokenizer->data.ch_idx;
+                    tokenizer->data.tok_col   = tokenizer->data.cur_col;
+                    tokenizer->data.tok_type  = MVM_ATT_NAME;
 
                     continue;
                 
@@ -359,10 +398,12 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
                 
                 }
 
-                return mvm_asm_tokenize_error(
+                mvm_asm_tokenize_error(
                     tokenizer,
                     "Invalid name syntax"
                 );
+
+                return 0;
 
                 break;
 
@@ -406,7 +447,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
         // if (0) {
 
-        //     if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
+        //     if(!mvm_asm_token_new(tokenizer)) {
 
         //         goto new_tok_err;
 
@@ -416,11 +457,13 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     }
 
+    scan_end: // Like break for nested loops
+
     // Append file-end token after finishing 
 
-    tok_type = MVM_ATT_END;
+    tokenizer->data.tok_type = MVM_ATT_END;
 
-    if(!mvm_asm_token_new(tokenizer, 0, 0, 0, 0, tok_type)) {
+    if(!mvm_asm_token_new(tokenizer)) {
 
         goto new_tok_err;
 
@@ -428,7 +471,9 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     return 1;
 
-    new_tok_err: // New token error
+    // New token error
+    
+    new_tok_err: 
 
     put_error_method( 
         "mvm_asm_tokenize", 
@@ -450,7 +495,7 @@ i8 mvm_asm_parser_init (
     i64              token_list_size) 
 {
 
-    // Prob Check for parent elem status here
+    // Prob check for parent elem status here
 
     if (!parser) {
         
