@@ -245,8 +245,7 @@ i8 mvm_asm_token_show (mvm_asm_token_t * token) {
         mvm_asm_token_typename(token->type)
     );
 
-    // TODO: Show the string of the token
-    //       Add a token reader
+    // TODO: Add a token reader
 
     if (token->type != MVM_ATT_START &&
         token->type != MVM_ATT_END &&
@@ -438,9 +437,8 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
         // Just starting or after on a separator char
 
-        // TODO: Implement scanning labels starting 
-        //       with '.' and var names starting 
-        //       with '$' 
+        // TODO: Implement scanning labels starting with '.' 
+        //       and var names starting with '$' 
 
         case MVM_ATS_BLANK:
 
@@ -757,56 +755,14 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
             return 0;
 
         case MVM_ATS_STRING:
-
-            if (ch == '\n') {
-
-                mvm_asm_tokenize_error(
-                    tokenizer,
-                    "Ilegal line break in string literal"
-                );
-
-                return 0;
-
-            }
-
-            if (on_esc) {
-
-                on_esc = FALSE;
-
-                continue;
-
-            }
-
-            if (ch == '\\') {
-
-                on_esc = TRUE;
-
-                continue;
-
-            }
-
-
-            if (ch == '"') {
-
-                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
-
-                tokenizer->data.cur_state = MVM_ATS_BLANK;
-
-                continue;
-
-            }
-
-            continue;
-
         case MVM_ATS_CHAR:
 
-            // TODO: Combine character 
-            //       and string statuses
-
             if (ch == '\n') {
 
                 mvm_asm_tokenize_error(
                     tokenizer,
+                    tokenizer->data.cur_state == MVM_ATS_STRING ?
+                    "Ilegal line break in string literal" :
                     "Ilegal line break in character literal"
                 );
 
@@ -829,8 +785,9 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
                 continue;
 
             }
-
-            if (ch == '\'') {
+            
+            if (tokenizer->data.cur_state == MVM_ATS_STRING && 
+                ch == '"' || ch == '\'') {
 
                 if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
 
@@ -840,7 +797,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
             }
 
-            if (saved_val) {
+            if (tokenizer->data.cur_state == MVM_ATS_STRING || saved_val) {
 
                 saved_val = 0;
                 

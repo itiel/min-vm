@@ -58,6 +58,9 @@ _name3      ; Underscore leading name
 
 ;"abcd\"     ; String with no closing quotes
 ;'asdfdfg'   ; Multi-character character literal
+;'\          ; Break in char literal. Might throw 
+;            ; multichar error instead of break error 
+;            ; because of carriage return 
 
 ;; -- Assmebly file example -- ;;
 
