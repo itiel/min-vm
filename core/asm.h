@@ -22,7 +22,7 @@
 // space, tab, dollar sign, plus minus, and equals signs, 
 // single and double quotes, colon and semicolon
 
-#define SEPCHARSET " \t\n\r$+-=\"':;"
+#define SEPCHARSET (" \t\n\r$+-=\"':;")
 
 // Character validation macros
 
@@ -76,7 +76,6 @@
 #define _txtch_next(_tknzr) \
     (_tknzr->parser->file_txt[++_tknzr->data.ch_idx])
 
-
 /* -- Types & Enums -- */
 
 typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
@@ -87,10 +86,9 @@ typedef struct mvm_asm_parser_t mvm_asm_parser_t;
 typedef enum {
 
     MVM_ATT_START,   // file-start
-    MVM_ATT_NAME,    // instruction and variable names
+    MVM_ATT_NAME,    // instruction, variable or tag name
                      // maybe even booleans (true & false)
-    MVM_ATT_NUMBER,  // decimal, hex, oct & bin
-                     // no float or e notation
+    MVM_ATT_NUMBER,  // decimal, no float or e-notation
     MVM_ATT_NUM_BIN, // binary number
     MVM_ATT_NUM_OCT, // octal number
     MVM_ATT_NUM_HEX, // hexadecimal number
@@ -131,10 +129,9 @@ typedef enum {
 typedef enum {
 
     MVM_ATS_BLANK,   // space or tab
-    MVM_ATS_NAME,    // instruction and variable names
+    MVM_ATS_NAME,    // instruction, variable or tag name
                      // maybe even booleans (true & false)
-    MVM_ATS_NUMBER,  // decimal, hex, oct & bin
-                     // no float or e notation
+    MVM_ATS_NUMBER,  // decimal, no float or e notation
     MVM_ATS_NUM_BIN, // binary number
     MVM_ATS_NUM_OCT, // octal number
     MVM_ATS_NUM_HEX, // hexadecimal number
@@ -242,7 +239,7 @@ i8 mvm_asm_token_show (mvm_asm_token_t * token) {
 
     printf(
         "<Token row: %ld\tcol: %ld\t" \
-        "start: %ld\tlen: %ld\ttype: %s\tstr: ",
+        "start: %ld\tlen: %ld\ttype: %s",
         token->row, token->col, 
         token->start, token->len,
         mvm_asm_token_typename(token->type)
@@ -251,7 +248,25 @@ i8 mvm_asm_token_show (mvm_asm_token_t * token) {
     // TODO: Show the string of the token
     //       Add a token reader
 
-    printf(">\n");
+    if (token->type != MVM_ATT_START &&
+        token->type != MVM_ATT_END &&
+        token->type != MVM_ATT_BREAK) {
+        
+        printf("\tstr: ");
+
+        for (int i = 0; i < token->len; ++i) {
+        
+            putchar(
+                token->tokenizer->parser->file_txt[
+                    token->start + i            
+                ]
+            );
+        
+        }
+
+    }
+
+    printf(" >\n");
 
     return 1;
 
@@ -295,7 +310,6 @@ i8 mvm_asm_tokenizer_init (
     }
 
     parser->status = MVM_AES_IN_USE;
-
 
     tokenizer->parser = parser;
     tokenizer->status = MVM_AES_INIT;
@@ -479,6 +493,8 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
                 tokenizer->data.tok_start = tokenizer->data.ch_idx;
                 tokenizer->data.tok_col   = tokenizer->data.cur_col;
 
+                saved_val = 1;
+
                 continue;
 
             case ';':
@@ -587,6 +603,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
                     if (ch == 'b' || ch == 'B') {
 
                         tokenizer->data.cur_state = MVM_ATS_NUM_BIN;
+                        tokenizer->data.tok_type  = MVM_ATT_NUM_BIN;
 
                         saved_val = 1;
 
@@ -597,6 +614,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
                     if (ch == 'o' || ch == 'O') {
 
                         tokenizer->data.cur_state = MVM_ATS_NUM_OCT;
+                        tokenizer->data.tok_type  = MVM_ATT_NUM_OCT;
 
                         saved_val = 1;
 
@@ -607,6 +625,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
                     if (ch == 'x' || ch == 'X') {
 
                         tokenizer->data.cur_state = MVM_ATS_NUM_HEX;
+                        tokenizer->data.tok_type  = MVM_ATT_NUM_HEX;
 
                         saved_val = 1;
 
@@ -808,7 +827,6 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
             }
 
-
             if (ch == '\'') {
 
                 if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
@@ -819,10 +837,18 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
             }
 
+            if (saved_val) {
+
+                saved_val = 0;
+                
+                continue;
+
+            }
+
             mvm_asm_tokenize_error(
                 tokenizer,
-                "Invalid character literal syntax"
-                // "Multi-character character literal"
+                // "Invalid character literal syntax"
+                "Multi-character character literal"
             );
 
             return 0;
@@ -895,6 +921,7 @@ i8 mvm_asm_parser_init (
         );
 
         return 0;
+
     }
 
     if (!file_txt) {
@@ -905,6 +932,7 @@ i8 mvm_asm_parser_init (
         );
 
         return 0;
+
     }
 
     if (!token_list) {
@@ -915,6 +943,7 @@ i8 mvm_asm_parser_init (
         );
 
         return 0;
+        
     }
 
     parser->file_txt        = file_txt;
@@ -947,7 +976,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
  
         put_error_method( 
             "mvm_asm_parse", 
-            "Parser element needs to be initialized."
+            "Parser element needs to be initialized." 
         );
  
         return -1;
@@ -957,7 +986,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
         put_error_method( 
             "mvm_asm_parse", 
-            "Something unexpected happened while initializing tokenizer."
+            "Something unexpected happened while initializing tokenizer." 
         );
 
         return -1;
