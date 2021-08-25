@@ -800,6 +800,9 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
         case MVM_ATS_CHAR:
 
+            // TODO: Combine character 
+            //       and string statuses
+
             if (ch == '\n') {
 
                 mvm_asm_tokenize_error(

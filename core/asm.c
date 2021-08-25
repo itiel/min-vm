@@ -23,6 +23,9 @@ int main (int argc, char const ** argv) {
 
     if (argc > 1) {
 
+        // TODO: Try doing this step without loading 
+        //       a buffer but reading directly from file
+
         buff_len = file2buff(file_name, buffer, BUFFSIZE);
 
         if (buff_len < 0) {

@@ -1,0 +1,71 @@
+;; -- Comments -- ;;
+
+; First token in line
+  ; Spaces and a comment
+	; A tab character and a comment
+
+;; -- Names -- ;;
+
+name        ; Alphabetic name 
+name2       ; Alphanumeric name 
+_name3      ; Underscore leading name
+
+;_name4      ; Name with bad characters
+
+;; -- Numbers -- ;;
+
+98619464    ; Decimal
+0           ; Also a decimal
+0b0         ; Binary
+0B1010101   ; Also binary
+0o0         ; Octal
+0o135467    ; Also octal
+0x0         ; Hexadecimal
+0x255       ; Also hexadecimal
+0xFF        ; Also hexadecimal
+0Xaa        ; Also hexadecimal
+
+;065464      ; Ilegal 0 leading decimal
+;5468p       ; Bad decimal
+;0b1010105   ; Bad binary
+;0o15489     ; Bad octal
+;0xFG        ; Bad hexadecimal
+
+;; -- Signs -- ;;
+
++           ; Plus sign
+-           ; Minus sign
+=           ; "Equals to" sign
+:           ; Colon
++++---      ; Multiple signs
+
+;$%&/()?!    ; Not (yet) recognized signs/characters
+
+;; -- String and character literals -- ;;
+
+"ABCDEFGH"  ; Good string 
+"ABCDEF\n"  ; String with escape characters
+"\"ABC\""   ; Also escape characters
+"!#$%&/()?" ; String with bad characters
+"1""2"      ; Two strings back to back
+"RLYLONGSTR"; There's no space between literal and comment
+""          ; Empty string literal
+
+'a'         ; Character literal
+'\t'        ; Escape characters again
+'\''        ; And again
+''          ; Empty character literal
+
+;"abcd\"     ; String with no closing quotes
+;'asdfdfg'   ; Multi-character character literal
+
+;; -- Assmebly file example -- ;;
+
+_start:
+
+  lda   1 ; Load 1 to a and 5 to b
+  ldb   5 
+  sum     ; Add a plus b and store the result in c
+  
+  nope    ; Do nothing
+  hlt     ; Stop simulation
