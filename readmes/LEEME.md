@@ -66,7 +66,7 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podr�
 |           | ***Fin***                                                                                                                              |
 |    `FF`   | `halt`, `hlt`, `stop`, `stp`                           | Detener simulación                                                            |
 
-## Fuentes útiles de información
+## Referncias útiles
 
 [:construction: Descripción]
 

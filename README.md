@@ -68,7 +68,7 @@ The following is a list of the instructions the assembler is (or will be) able t
 |          | ***Halt***                                                                                                           |
 |   `FF`   | `halt`, `hlt`, `stop`, `stp`                           | Stop simulation                                             |
 
-## Useful resources
+## Useful sources
 
 [:construction: Some description]
 
