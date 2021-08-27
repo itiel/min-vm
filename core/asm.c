@@ -7,8 +7,8 @@
 
 #include "asm.h"
 
-#define BUFFSIZE    2048
-#define TOKLISTSIZE 256
+#define BUFFSIZE    2048 * 2
+#define TOKLISTSIZE 256 
 
 int main (int argc, char const ** argv) {
 

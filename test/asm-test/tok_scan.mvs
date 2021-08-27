@@ -1,8 +1,17 @@
+;; -- Breaks -- ;;
+
+; 3 consecutive breaks starting now
+
+
+; 2 lines with only spaces and tabs
+				    
+
+
 ;; -- Comments -- ;;
 
 ; First token in line
   ; Spaces and a comment
-	; A tab character and a comment
+	; A tab and a comment
 
 ;; -- Names -- ;;
 
@@ -10,7 +19,7 @@ name        ; Alphabetic name
 name2       ; Alphanumeric name 
 _name3      ; Underscore leading name
 
-;_name4      ; Name with bad characters
+;_name4&     ; Name with bad characters
 
 ;; -- Numbers -- ;;
 
@@ -26,9 +35,9 @@ _name3      ; Underscore leading name
 0Xaa        ; Also hexadecimal
 
 ;065464      ; Ilegal 0 leading decimal
-;5468p       ; Bad decimal
-;0b1010105   ; Bad binary
-;0o15489     ; Bad octal
+;5468i       ; Bad decimal
+;0b1010102   ; Bad binary
+;0o1548      ; Bad octal
 ;0xFG        ; Bad hexadecimal
 
 ;; -- Signs -- ;;
@@ -38,6 +47,8 @@ _name3      ; Underscore leading name
 =           ; "Equals to" sign
 :           ; Colon
 +++---      ; Multiple signs
+a+b         ; Names and signs
+a + b +c+ d ; Names and signs
 
 ;$%&/()?!    ; Not (yet) recognized signs/characters
 
@@ -49,6 +60,7 @@ _name3      ; Underscore leading name
 "!#$%&/()?" ; String with bad characters
 "1""2"      ; Two strings back to back
 "RLYLONGSTR"; There's no space between literal and comment
+"	"         ; String with tab
 ""          ; Empty string literal
 
 'a'         ; Character literal
@@ -56,11 +68,11 @@ _name3      ; Underscore leading name
 '\''        ; And again
 ''          ; Empty character literal
 
-;"abcd\"     ; String with no closing quotes
+"abcd\"     ; String with no closing quotes
 ;'asdfdfg'   ; Multi-character character literal
 ;'\          ; Break in char literal. Might throw 
 ;            ; multichar error instead of break error 
-;            ; because of carriage return 
+;            ; because of carriage return
 
 ;; -- Assmebly file example -- ;;
 
