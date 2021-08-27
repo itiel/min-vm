@@ -68,7 +68,7 @@ a + b +c+ d ; Names and signs
 '\''        ; And again
 ''          ; Empty character literal
 
-"abcd\"     ; String with no closing quotes
+;"abcd\"     ; String with no closing quotes
 ;'asdfdfg'   ; Multi-character character literal
 ;'\          ; Break in char literal. Might throw 
 ;            ; multichar error instead of break error 

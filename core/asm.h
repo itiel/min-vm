@@ -70,12 +70,6 @@
 #define _toklst_next(_tknzr) \
     (&(_tknzr->parser->token_list[_tknzr->parser->token_list_len++]))
 
-// To be used in mvm_asm_tokenize()
-// _txtch_next() increments 1 to ch_idx
-
-#define _txtch_next(_tknzr) \
-    (_tknzr->parser->file_txt[++_tknzr->data.ch_idx])
-
 /* -- Types & Enums -- */
 
 typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
@@ -172,8 +166,7 @@ typedef struct mvm_asm_tokenizer_t {
 
 typedef struct mvm_asm_parser_t {
  
-    i8              * file_txt; 
-    i64             file_txt_len;
+    FILE            * file;
     i8              * file_name; 
     mvm_asm_token_t * token_list; 
     i64             token_list_len;
@@ -227,7 +220,7 @@ i8 mvm_asm_token_new (mvm_asm_tokenizer_t * tokenizer) {
 
 }
 
-i8 mvm_asm_token_reader_ini (
+i8 mvm_asm_token_reader_init (
     mvm_asm_token_reader_t * token_reader,
     mvm_asm_token_t        * token) 
 {
@@ -243,11 +236,21 @@ i8 mvm_asm_token_reader_ini (
     token_reader->ch_idx = 0;
     token_reader->status = MVM_AES_INIT;
 
+    fseek(token->tokenizer->parser->file, token->start, SEEK_SET);
+
     return TRUE;
 
 }
 
 i32 mvm_asm_token_reader_next_ch (mvm_asm_token_reader_t * token_reader) {
+
+    if (token_reader->status == MVM_AES_END) {
+ 
+        return EOF;
+
+    }
+
+    token_reader->status == MVM_AES_IN_USE;
 
     if (token_reader->token->type == MVM_ATT_START ||
         token_reader->token->type == MVM_ATT_END   ||
@@ -255,15 +258,15 @@ i32 mvm_asm_token_reader_next_ch (mvm_asm_token_reader_t * token_reader) {
         token_reader->ch_idx == token_reader->token->len) 
     {
 
+        token_reader->status = MVM_AES_END;
+
         return EOF;
 
     }
 
-    return (
-        token_reader->token->tokenizer->parser->file_txt[
-            token_reader->token->start + (token_reader->ch_idx++)
-        ]
-    );
+    token_reader->ch_idx++;
+
+    return getc(token_reader->token->tokenizer->parser->file);
 
 }
 
@@ -283,7 +286,7 @@ i8 mvm_asm_token_repr_show (mvm_asm_token_t * token) {
 
     mvm_asm_token_reader_t tok_reader;
 
-    mvm_asm_token_reader_ini(&tok_reader, token);
+    mvm_asm_token_reader_init(&tok_reader, token);
 
     putchar('"');
 
@@ -460,8 +463,9 @@ i8 mvm_asm_tokenize_error (
     i8  ch;
 
     line_start = tokenizer->data.last_break + 1;
+    ch_idx     = tokenizer->data.ch_idx - line_start + 1;
 
-    ch_idx = tokenizer->data.ch_idx - line_start + 1;
+    fseek(tokenizer->parser->file, line_start, SEEK_SET);
 
     // Code line
  
@@ -469,7 +473,7 @@ i8 mvm_asm_tokenize_error (
 
     for (i = 0; i < ch_idx; ++i) {
 
-        ch = tokenizer->parser->file_txt[line_start + i];
+        ch = getc(tokenizer->parser->file);
 
         if (ch == '\n') break;
  
@@ -529,8 +533,9 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
 
-    while (ch = _txtch_next(tokenizer)) {
+    while ((ch = getc(tokenizer->parser->file)) != EOF) {
 
+        tokenizer->data.ch_idx++;
         tokenizer->data.cur_col++;
 
         // GOTO: Re-eval char but with diff state
@@ -953,6 +958,8 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
 
+    tokenizer->status = MVM_AES_END;
+
     return 1;
 
     // GOTO: New token error
@@ -972,8 +979,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
 i8 mvm_asm_parser_init ( 
     mvm_asm_parser_t * parser, 
-    i8               * file_txt, 
-    i64              file_txt_len, 
+    FILE             * file, 
     i8               * file_name, 
     mvm_asm_token_t  * token_list, 
     i64              token_list_size) 
@@ -992,16 +998,18 @@ i8 mvm_asm_parser_init (
 
     }
 
-    if (!file_txt) {
+    if (!file) {
  
         put_error_method( 
             "mvm_asm_parser_init", 
-            "Source string pointer should not be NULL."
+            "File pointer should not be NULL."
         );
 
         return 0;
 
     }
+
+    rewind(file);
 
     if (!token_list) {
  
@@ -1014,8 +1022,7 @@ i8 mvm_asm_parser_init (
  
     }
 
-    parser->file_txt        = file_txt;
-    parser->file_txt_len    = file_txt_len;
+    parser->file            = file;
     parser->file_name       = file_name;
     parser->token_list      = token_list;
     parser->token_list_len  = 0;
