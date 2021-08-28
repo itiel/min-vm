@@ -12,7 +12,6 @@ int main (int argc, char const ** argv) {
     char             * file_name;
     FILE             * file;
     mvm_asm_token_t  tokens[TOKLISTSIZE];
-    i64              tokens_len;
     mvm_asm_parser_t parser;
 
     file_name = (char *) argv[1];
@@ -27,7 +26,7 @@ int main (int argc, char const ** argv) {
                 file_name
             );
 
-            return -1;
+            return 1;
 
         }
 
@@ -54,7 +53,8 @@ int main (int argc, char const ** argv) {
 
             put_error_method( 
                 "main", 
-                "Something unexpected happened while parsing file."
+                "Something unexpected happened while parsing file (%s).",
+                file_name
             );
 
             fclose(file);

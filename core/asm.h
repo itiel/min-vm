@@ -256,7 +256,7 @@ i8 mvm_asm_token_reader_init (
 
 }
 
-i32 mvm_asm_token_reader_next_ch (mvm_asm_token_reader_t * token_reader) {
+i32 mvm_asm_token_reader_next (mvm_asm_token_reader_t * token_reader) {
 
     if (token_reader->status == MVM_AES_END) {
  
@@ -304,10 +304,10 @@ i8 mvm_asm_token_repr_show (mvm_asm_token_t * token) {
 
     putchar('"');
 
-    while ((ch = mvm_asm_token_reader_next_ch(&tok_reader)) != EOF) {
+    while ((ch = mvm_asm_token_reader_next(&tok_reader)) != EOF) {
 
-        if (ch >= 0 && 
-            ch <= 31 || 
+        if ((ch >= 0 && 
+            ch <= 31) || 
             ch == 127) 
         {
  
@@ -478,6 +478,9 @@ i8 mvm_asm_tokenize_error (
  
     // Show line of code and point to 
     // troubling character with an arrow
+
+    // TODO: Show the whole line, not just 
+    //       up the character in question
 
     i64 line_start;
     i64 ch_idx;
@@ -926,8 +929,8 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
             }
  
-            if (tokenizer->data.cur_state == MVM_ATS_STRING && 
-                ch == '"' || ch == '\'') {
+            if ((tokenizer->data.cur_state == MVM_ATS_STRING && 
+                ch == '"') || ch == '\'') {
 
                 if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
 
@@ -974,7 +977,7 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
                 "Tokenizer state out of range (%d).",
                 tokenizer->data.cur_state
             );
-         
+ 
             return 0;
 
         }
@@ -1064,7 +1067,7 @@ i8 mvm_asm_parser_init (
 
 }
 
-i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
+i8 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
     mvm_asm_tokenizer_t tokenizer;
 
@@ -1085,7 +1088,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
             "Parser element needs to be initialized." 
         );
  
-        return -1;
+        return 0;
     }
 
     if (!mvm_asm_tokenizer_init(&tokenizer, parser)) {
@@ -1095,7 +1098,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
             "Something unexpected happened while initializing tokenizer." 
         );
 
-        return -1;
+        return 0;
 
     }
 
@@ -1107,7 +1110,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
             tokenizer.parser->file_name
         );
  
-        return -1;
+        return 0;
  
     }
 
@@ -1117,7 +1120,7 @@ i64 mvm_asm_parse (mvm_asm_parser_t * parser) {
 
     }
 
-    return parser->token_list_len;
+    return 1;
 
 }
 
