@@ -447,8 +447,8 @@ i8 mvm_asm_tokenizer_init (
 
     tokenizer->data.cur_state  = MVM_ATS_BLANK;
     tokenizer->data.last_break = 0;
-    tokenizer->data.ch_idx     = -1;
-    tokenizer->data.cur_col    = -1;
+    tokenizer->data.ch_idx     = 0;
+    tokenizer->data.cur_col    = 0;
     tokenizer->data.cur_row    = 0;
 
     // Token variables
@@ -563,7 +563,480 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
     if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
 
-    while ((ch = getc(tokenizer->parser->file)) != EOF) {
+    for (;(ch = getc(tokenizer->parser->file)) != EOF;
+        tokenizer->data.ch_idx++, tokenizer->data.cur_col++) {
+
+        // GOTO: Re-eval char but with diff state
+
+        redo_char: 
+
+        switch (tokenizer->data.cur_state) {
+
+        // Just starting or after on a separator char
+
+        // TODO: Implement scanning labels starting with '.' 
+        //       and var names starting with '$' 
+
+        case MVM_ATS_BLANK:
+
+            switch (ch) {
+
+            case ' ': case '\t': case '\r':
+
+                continue;
+
+            case '\n':
+
+                tokenizer->data.tok_type  = MVM_ATT_BREAK;
+                tokenizer->data.tok_start = tokenizer->data.ch_idx;
+                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.last_break = tokenizer->data.ch_idx;
+ 
+                tokenizer->data.cur_col = -1;
+                tokenizer->data.cur_row += 1;
+
+                continue;
+
+            case '+': case '-': case '=': case ':':
+
+                tokenizer->data.tok_type  = MVM_ATT_SIGN;
+                tokenizer->data.tok_start = tokenizer->data.ch_idx;
+                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+                // tokenizer->data.ch_idx -= 1;
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                // tokenizer->data.ch_idx += 1;
+
+                continue;
+
+            case '"':
+
+                tokenizer->data.cur_state = MVM_ATS_STRING;
+
+                tokenizer->data.tok_type  = MVM_ATT_STRING;
+                tokenizer->data.tok_start = tokenizer->data.ch_idx + 1;
+                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+                continue;
+
+            case '\'':
+
+                tokenizer->data.cur_state = MVM_ATS_CHAR;
+
+                tokenizer->data.tok_type  = MVM_ATT_CHAR;
+                tokenizer->data.tok_start = tokenizer->data.ch_idx + 1;
+                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+                saved_val = 1;
+
+                continue;
+
+            case ';':
+
+                tokenizer->data.cur_state = MVM_ATS_COMMENT;
+
+                tokenizer->data.tok_type  = MVM_ATT_COMMENT;
+                tokenizer->data.tok_start = tokenizer->data.ch_idx;
+                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+                continue;
+
+            }
+
+            if (ch_is_name_lead(ch)) {
+
+                tokenizer->data.cur_state = MVM_ATS_NAME;
+
+                tokenizer->data.tok_type  = MVM_ATT_NAME;
+                tokenizer->data.tok_start = tokenizer->data.ch_idx;
+                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+                continue;
+
+            }
+
+            if (ch_is_dig(ch)) {
+
+                tokenizer->data.cur_state = MVM_ATS_NUMBER;
+
+                tokenizer->data.tok_type  = MVM_ATT_NUMBER;
+                tokenizer->data.tok_start = tokenizer->data.ch_idx;
+                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+                if (ch == '0') lead_zero = TRUE;
+
+                saved_val = 1;
+
+                continue;
+
+            }
+
+            mvm_asm_tokenize_error(
+                tokenizer,
+                "Invalid syntax"
+            );
+
+            return 0;
+
+        case MVM_ATS_NAME:
+
+            if (ch_is_sep(ch)) {
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.cur_state = MVM_ATS_BLANK;
+
+                goto redo_char;
+
+            }
+
+            if (ch_is_name(ch)) continue;
+
+            mvm_asm_tokenize_error(
+                tokenizer,
+                "Invalid name syntax"
+            );
+
+            return 0;
+
+        case MVM_ATS_NUMBER:
+
+            if (ch_is_sep(ch)) {
+
+                // Only if it's more than 1 character
+
+                if (!saved_val && lead_zero) {
+
+                    mvm_asm_tokenize_error(
+                        tokenizer,
+                        "Ilegal zero-leading decimal"
+                    );
+
+                    return 0;
+ 
+                }
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.cur_state = MVM_ATS_BLANK;
+
+                saved_val = 0;
+
+                goto redo_char;
+
+            }
+
+            // Only on second character
+
+            if (saved_val) {
+ 
+                saved_val = 0;
+
+                if (lead_zero) {
+
+                    if (ch == 'b' || ch == 'B') {
+
+                        tokenizer->data.cur_state = MVM_ATS_NUM_BIN;
+                        tokenizer->data.tok_type  = MVM_ATT_NUM_BIN;
+
+                        saved_val = 1;
+
+                        continue;
+
+                    }
+
+                    if (ch == 'o' || ch == 'O') {
+
+                        tokenizer->data.cur_state = MVM_ATS_NUM_OCT;
+                        tokenizer->data.tok_type  = MVM_ATT_NUM_OCT;
+
+                        saved_val = 1;
+
+                        continue;
+
+                    }
+
+                    if (ch == 'x' || ch == 'X') {
+
+                        tokenizer->data.cur_state = MVM_ATS_NUM_HEX;
+                        tokenizer->data.tok_type  = MVM_ATT_NUM_HEX;
+
+                        saved_val = 1;
+
+                        continue;
+
+                    }
+
+                }
+            }
+
+            if (ch_is_dig(ch)) continue;
+
+            mvm_asm_tokenize_error(
+                tokenizer,
+                "Invalid decimal syntax"
+            );
+
+            return 0;
+
+        case MVM_ATS_NUM_BIN:
+
+            if (ch_is_sep(ch)) {
+
+                // Only if it's the first 
+                // character after 0b
+
+                if (saved_val) {
+
+                    mvm_asm_tokenize_error(
+                        tokenizer,
+                        "Invalid binary syntax"
+                    );
+
+                    return 0;
+ 
+                }
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.cur_state = MVM_ATS_BLANK;
+
+                goto redo_char;
+
+            }
+
+            if (saved_val) saved_val = 0; 
+
+            if (ch_is_bin(ch)) continue;
+
+            mvm_asm_tokenize_error(
+                tokenizer,
+                "Invalid binary syntax"
+            );
+
+            return 0;
+
+        case MVM_ATS_NUM_OCT:
+
+            if (ch_is_sep(ch)) {
+
+                // Only if it's the first 
+                // character after 0o
+
+                if (saved_val) {
+
+                    mvm_asm_tokenize_error(
+                        tokenizer,
+                        "Invalid octal syntax"
+                    );
+
+                    return 0;
+ 
+                }
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.cur_state = MVM_ATS_BLANK;
+
+                goto redo_char;
+
+            }
+
+            if (saved_val) saved_val = 0; 
+
+            if (ch_is_oct(ch)) continue;
+
+            mvm_asm_tokenize_error(
+                tokenizer,
+                "Invalid octal syntax"
+            );
+
+            return 0;
+
+        case MVM_ATS_NUM_HEX:
+
+            if (ch_is_sep(ch)) {
+
+                // Only if it's the first 
+                // character after 0x
+
+                if (saved_val) {
+
+                    mvm_asm_tokenize_error(
+                        tokenizer,
+                        "Invalid hexadecimal syntax"
+                    );
+
+                    return 0;
+ 
+                }
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.cur_state = MVM_ATS_BLANK;
+
+                goto redo_char;
+
+            }
+
+            if (saved_val) saved_val = 0; 
+
+            if (ch_is_hex(ch)) continue;
+
+            mvm_asm_tokenize_error(
+                tokenizer,
+                "Invalid hexadecimal syntax"
+            );
+
+            return 0;
+
+        case MVM_ATS_STRING:
+        case MVM_ATS_CHAR:
+
+            if (ch == '\n') {
+
+                mvm_asm_tokenize_error(
+                    tokenizer,
+                    tokenizer->data.cur_state == MVM_ATS_STRING ?
+                    "Ilegal line break in string literal" :
+                    "Ilegal line break in character literal"
+                );
+
+                return 0;
+
+            }
+
+            if (on_esc) {
+
+                on_esc = FALSE;
+
+                continue;
+
+            }
+
+            if (ch == '\\') {
+
+                on_esc = TRUE;
+
+                continue;
+
+            }
+ 
+            if ((tokenizer->data.cur_state == MVM_ATS_STRING && 
+                ch == '"') || ch == '\'') {
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.cur_state = MVM_ATS_BLANK;
+
+                continue;
+
+            }
+
+            if (tokenizer->data.cur_state == MVM_ATS_STRING || saved_val) {
+
+                saved_val = 0;
+ 
+                continue;
+
+            }
+
+            mvm_asm_tokenize_error(
+                tokenizer,
+                // "Invalid character literal syntax"
+                "Multi-character character literal"
+            );
+
+            return 0;
+
+        case MVM_ATS_COMMENT:
+
+            if (ch == '\n') {
+
+                if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+                tokenizer->data.cur_state = MVM_ATS_BLANK;
+
+                goto redo_char;
+
+            }
+
+            continue;
+
+        default:
+ 
+            put_error_method( 
+                "mvm_asm_tokenize", 
+                "Tokenizer state out of range (%d).",
+                tokenizer->data.cur_state
+            );
+ 
+            return 0;
+
+        }
+
+    }
+
+    // TODO: Check for incomplete tokens
+
+    // Append file-end token after finishing 
+
+    tokenizer->data.tok_type = MVM_ATT_END;
+
+    if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+    tokenizer->status = MVM_AES_END;
+
+    return 1;
+
+    // GOTO: New token error
+ 
+    new_tok_err: 
+
+    put_error_method( 
+        "mvm_asm_tokenize", 
+        "Something unexpected happened while generating new token."
+    );
+ 
+    return 0;
+
+}
+
+i8 mvm_asm_tokenizer_next (
+    mvm_asm_tokenizer_t * tokenizer,
+    mvm_asm_token_t     * token)
+{
+
+    i8  ch;        // The character to check
+    i8  on_esc;    // Escape char in string or char literal
+    i8  lead_zero; // Number literals starting with '0'
+    i64 saved_val; // Multi-purpose val
+
+    if (tokenizer->status != MVM_AES_END) {
+ 
+        return 0;
+
+    }
+
+    tokenizer->status = MVM_AES_IN_USE;
+
+    // Start of process
+
+    on_esc    = FALSE;
+    lead_zero = FALSE;
+    saved_val = 0;
+
+    // Append file-start token before scanning
+
+    if (!mvm_asm_token_new(tokenizer)) goto new_tok_err;
+
+    for (;(ch = getc(tokenizer->parser->file)) != EOF;
+        tokenizer->data.ch_idx++, tokenizer->data.cur_col++) {
 
         tokenizer->data.ch_idx++;
         tokenizer->data.cur_col++;
