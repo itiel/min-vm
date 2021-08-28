@@ -1,4 +1,4 @@
-/*
+
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 12/08/2021
 */
@@ -177,7 +177,8 @@ typedef struct mvm_asm_parser_t {
 
 /* -- Functions -- */
 
-// TODO: Do declarations first, then definitions
+// TODO: Do token, tokenizer, parser, types, enums and
+//       all that stuff in separate files
 
 // Token methods
 
@@ -500,6 +501,11 @@ i8 mvm_asm_tokenize_error (
     return 0;
 
 }
+
+// TODO: Make this more like token_reader_next_ch()
+//       or like any yield function in python so we 
+//       don't need a buffer to store the tokens. 
+//       Maybe store them in a file during parse()
 
 i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
