@@ -226,11 +226,24 @@ i8 mvm_asm_token_reader_init (
     mvm_asm_token_t        * token) 
 {
 
+    if (!token_reader) {
+
+        put_error_method( 
+            "mvm_asm_token_reader_init", 
+            "Token-reader pointer should not be NULL."
+        );
+
+        return 0;
+    } 
+
     if (!token) {
 
-        // TODO: Error msg
+        put_error_method( 
+            "mvm_asm_token_reader_init", 
+            "Token pointer should not be NULL."
+        );
 
-        return FALSE;
+        return 0;
     } 
 
     token_reader->token  = token;
@@ -239,7 +252,7 @@ i8 mvm_asm_token_reader_init (
 
     fseek(token->tokenizer->parser->file, token->start, SEEK_SET);
 
-    return TRUE;
+    return 1;
 
 }
 
@@ -355,7 +368,15 @@ i64 mvm_asm_token_typename_show (mvm_asm_token_t * token) {
 
 i8 mvm_asm_token_show (mvm_asm_token_t * token) {
 
-    // TODO: Maybe check for null token pointer
+    if (!token) {
+
+        put_error_method( 
+            "mvm_asm_token_show", 
+            "Token pointer should not be NULL."
+        );
+
+        return 0;
+    }
 
     printf(
         "<Token row: %ld\tcol: %ld\t" \
@@ -948,9 +969,13 @@ i8 mvm_asm_tokenize (mvm_asm_tokenizer_t * tokenizer) {
 
         default:
  
-            // TODO: Should this be like this?
-
-            break;
+            put_error_method( 
+                "mvm_asm_tokenize", 
+                "Tokenizer state out of range (%d).",
+                tokenizer->data.cur_state
+            );
+         
+            return 0;
 
         }
 
