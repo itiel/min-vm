@@ -5,13 +5,10 @@
 
 #include "asm.h"
 
-#define TOKLISTSIZE 256 
-
 int main (int argc, char const ** argv) {
 
     char             * file_name;
     FILE             * file;
-    mvm_asm_token_t  tokens[TOKLISTSIZE];
     mvm_asm_parser_t parser;
 
     file_name = (char *) argv[1];
@@ -34,8 +31,7 @@ int main (int argc, char const ** argv) {
 
         if (!mvm_asm_parser_init(
             &parser, 
-            file, file_name, 
-            tokens, TOKLISTSIZE)) 
+            file, file_name)) 
         {
 
             put_error_method( 
