@@ -9,20 +9,35 @@
 /* -- Includes -- */
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <util/fwn.h>
 #include <util/err.h>
 #include <util/choc.h>
 
 /* -- Defines -- */
 
+// Booleans
+
 #define TRUE  1
 #define FALSE 0
 
-// space, tab, dollar sign, plus minus, and equals signs, 
-// single and double quotes, colon and semicolon
+// Separator characters
 
-#define SEPCHARSET (" \t\n\r$+-=\"':;")
+// ' '  - space 
+// '\t' - tab
+// '\f' - feed
+// '\n' - new line
+// '\r' - carriage return
+// '.'  - period
+// '$'  - dollar sign
+// '+'  - plus sign
+// '-'  - minus sign
+// '='  - equals sign
+// "'"  - single quote
+// '"'  - double quote
+// ':'  - colon
+// ';'  - semicolon
+
+#define SEPCHARSET (" \t\f\n\r.&+-=\"':;")
 
 // Character validation macros
 
@@ -58,10 +73,11 @@
 #define       ch_is_sep(_ch) \
     char_occur(_ch, SEPCHARSET)
 
-/* -- Types & Enums -- */
+/* -- Declarations -- */
 
-typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
-typedef struct mvm_asm_parser_t mvm_asm_parser_t;
+// Enums
+
+// Assembler element status
 
 typedef enum {
 
@@ -91,7 +107,48 @@ typedef enum {
     MVM_ATT_BREAK,   // line break (\n)
     MVM_ATT_END,     // file-end
 
-} mvm_asm_token_types_t;
+} mvm_asm_token_type_t;
+
+// Tokenizer data state
+
+typedef enum {
+
+    MVM_ATDS_BLANK,   // space or tab
+    MVM_ATDS_NAME,    // instruction, variable or tag name
+                      // maybe even booleans (true & false)
+    MVM_ATDS_NUMBER,  // decimal, no float or e notation
+    MVM_ATDS_NUM_BIN, // binary number
+    MVM_ATDS_NUM_OCT, // octal number
+    MVM_ATDS_NUM_HEX, // hexadecimal number
+    MVM_ATDS_STRING,  // double quoted string literal
+    MVM_ATDS_CHAR,    // single quoted char literal
+    MVM_ATDS_COMMENT, // semicolon leading comment
+
+} mvm_asm_tokenizer_data_state_t;
+
+// Types
+
+typedef struct mvm_asm_parser_t mvm_asm_parser_t;
+typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
+typedef struct mvm_asm_tokenizer_data_t mvm_asm_tokenizer_data_t;
+typedef struct mvm_asm_token_t mvm_asm_token_t;
+typedef struct mvm_asm_token_reader_t mvm_asm_token_reader_t;
+
+// Functions
+
+i8  mvm_asm_parser_init         (mvm_asm_parser_t * parser, FILE * file, i8 * file_name);
+i8  mvm_asm_parse               (mvm_asm_parser_t * parser);
+i8  mvm_asm_tokenizer_init      (mvm_asm_tokenizer_t * tokenizer, mvm_asm_parser_t * parser);
+i8  mvm_asm_tokenize_next       (mvm_asm_tokenizer_t * tokenizer, mvm_asm_token_t * token);
+i8  mvm_asm_tokenize_error      (mvm_asm_tokenizer_t * tokenizer, i8 * reason);
+i8  mvm_asm_token_yield         (mvm_asm_tokenizer_t * tokenizer, mvm_asm_token_t * token);
+i8  mvm_asm_token_show          (mvm_asm_token_t * token);
+i8  mvm_asm_token_repr_show     (mvm_asm_token_t * token);
+i64 mvm_asm_token_typename_show (mvm_asm_token_t * token);
+i8  mvm_asm_token_reader_init   (mvm_asm_token_reader_t * token_reader, mvm_asm_token_t * token);
+i32 mvm_asm_token_read_next     (mvm_asm_token_reader_t * token_reader);
+
+/* -- Definitions -- */
 
 typedef struct mvm_asm_token_t {
 
@@ -111,23 +168,6 @@ typedef struct mvm_asm_token_reader_t {
     i8              status;
 
 } mvm_asm_token_reader_t;
-
-// Tokenizer
-
-typedef enum {
-
-    MVM_ATDS_BLANK,   // space or tab
-    MVM_ATDS_NAME,    // instruction, variable or tag name
-                     // maybe even booleans (true & false)
-    MVM_ATDS_NUMBER,  // decimal, no float or e notation
-    MVM_ATDS_NUM_BIN, // binary number
-    MVM_ATDS_NUM_OCT, // octal number
-    MVM_ATDS_NUM_HEX, // hexadecimal number
-    MVM_ATDS_STRING,  // double quoted string literal
-    MVM_ATDS_CHAR,    // single quoted char literal
-    MVM_ATDS_COMMENT, // semicolon leading comment
-
-} mvm_asm_tokenizer_data_state_t;
 
 typedef struct mvm_asm_tokenizer_data_t {
 
@@ -151,8 +191,6 @@ typedef struct mvm_asm_tokenizer_t {
 
 } mvm_asm_tokenizer_t;
 
-// Parser
-
 typedef struct mvm_asm_parser_t {
  
     FILE            * file;
@@ -162,9 +200,6 @@ typedef struct mvm_asm_parser_t {
 } mvm_asm_parser_t;
 
 /* -- Functions -- */
-
-// TODO: Do token, tokenizer, parser, types, enums and
-//       all that stuff in separate files
 
 // Token Reader methods
 
@@ -291,6 +326,7 @@ i8 mvm_asm_token_repr_show (mvm_asm_token_t * token) {
                  if (ch == '\b') printf("\\b");
             else if (ch == '\t') printf("\\t");
             else if (ch == '\r') printf("\\r");
+            else if (ch == '\f') printf("\\f");
             else if (ch == '\v') printf("\\v");
             else if (ch == '\n') printf("\\n");
             else printf("\\x%02x", (int) ch);
@@ -430,7 +466,7 @@ i8 mvm_asm_tokenize_error (
     // troubling character with an arrow
 
     // TODO: Show the whole line, not just 
-    //       up the character in question
+    //       up to the character in question
 
     i64 line_start;
     i64 ch_idx;
@@ -608,7 +644,7 @@ i8 mvm_asm_tokenize_next (
 
             switch (ch) {
 
-            case ' ': case '\t': case '\r':
+            case ' ': case '\t': case '\r': case '\f':
 
                 continue;
 
