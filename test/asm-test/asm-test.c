@@ -3,7 +3,7 @@
  . Created: 12/08/2021
 */
 
-#include "../../core/asm/asm.h"
+#include <core/asm/asm.h>
 #include <util/err.h>
 
 int main (int argc, char const ** argv) {

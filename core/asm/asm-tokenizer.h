@@ -31,10 +31,31 @@ typedef enum {
 
 /* -- Types -- */
 
-typedef struct mvm_asm_tokenizer_data_t mvm_asm_tokenizer_data_t;
-typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
 typedef struct mvm_asm_assembler_t mvm_asm_assembler_t;
 typedef struct mvm_asm_token_t mvm_asm_token_t;
+
+typedef struct mvm_asm_tokenizer_data_t {
+
+    i32 cur_state;
+    i32 redo_char;
+    i64 last_break;
+    i64 ch_idx;
+    i64 cur_col;
+    i64 cur_row;
+    i64 tok_start;
+    i64 tok_col;
+    i32 tok_type;
+
+} mvm_asm_tokenizer_data_t;
+
+typedef struct mvm_asm_tokenizer_t {
+
+    mvm_asm_assembler_t      * assembler;
+    mvm_asm_tokenizer_data_t data;
+    i32                      status;
+
+} mvm_asm_tokenizer_t;
+
 
 /* -- Functions -- */
 

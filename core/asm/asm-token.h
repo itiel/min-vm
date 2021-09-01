@@ -35,9 +35,26 @@ typedef enum {
 
 /* -- Types -- */
 
-typedef struct mvm_asm_token_t mvm_asm_token_t;
-typedef struct mvm_asm_token_reader_t mvm_asm_token_reader_t;
 typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
+
+typedef struct mvm_asm_token_t {
+
+    mvm_asm_tokenizer_t * tokenizer;
+    i64                 start;
+    i64                 row;
+    i64                 col;
+    i64                 len;
+    i32                 type;
+
+} mvm_asm_token_t;
+
+typedef struct mvm_asm_token_reader_t {
+
+    mvm_asm_token_t * token;
+    i64             ch_idx;
+    i32             status;
+
+} mvm_asm_token_reader_t;
 
 /* -- Functions -- */
 
