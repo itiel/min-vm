@@ -81,7 +81,7 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podr√
 <table>
     <thead>
         <tr>
-            <th>C√≥digo OP</th>
+            <th>C√≥digo <br>OP</th>
             <th>Nombre(s) de Inst</th>
             <th>Arg(s)</th>
             <th>Descripci√≥n</th>
@@ -298,7 +298,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podr√
         </td>
         <td align="center">-</td>
         <td>
-            Comparar <strong><em>a</em></strong> con <strong><em>b</em></strong> y guardar el resultado en <strong><em>c</em></strong>
+            Comparar <strong><em>a</em></strong> con <strong><em>b</em></strong> y guardar <br>
+            el resultado en <strong><em>c</em></strong>
         </td>
     </tr>
     <tr>
@@ -315,7 +316,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podr√
         </td>
         <td align="center">-</td>
         <td>
-            Comparar <em>("o exclusivo")</em>  <strong><em>a</em></strong> con <strong><em>b</em></strong> y guardar el resultado en <strong><em>c</em></strong>
+            Comparar <em>("o exclusivo")</em>  <strong><em>a</em></strong> con <strong><em>b</em></strong> <br>
+            y guardar el resultado en <strong><em>c</em></strong>
         </td>
     </tr>
     <thead>
