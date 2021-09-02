@@ -194,7 +194,7 @@ i32 mvm_asm_assembler_kill (mvm_asm_assembler_t * assembler) {
 
     }
 
-    assembler->status == MVM_AES_END;
+    assembler->status = MVM_AES_END;
 
     return TRUE;
 
@@ -226,7 +226,7 @@ i32 mvm_asm_assemble (mvm_asm_assembler_t * assembler) {
         return FALSE;
     }
 
-    assembler->status == MVM_AES_IN_USE;
+    assembler->status = MVM_AES_IN_USE;
 
     if (!mvm_asm_tokenizer_init(&tokenizer, assembler)) {
 
@@ -473,7 +473,7 @@ i32 mvm_asm_token_read_next (mvm_asm_token_reader_t * token_reader) {
 
     }
 
-    token_reader->status == MVM_AES_IN_USE;
+    token_reader->status = MVM_AES_IN_USE;
 
     if (token_reader->token->type == MVM_ATT_START ||
         token_reader->token->type == MVM_ATT_END   ||
