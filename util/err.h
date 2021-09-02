@@ -16,8 +16,9 @@
 
 #define eputchar(ch) putc(ch, stderr)
 
-#define eprintf(format, ...) \
-    fprintf(stderr, format __VA_OPT__(, __VA_ARGS__))
+#define eprintf(format, ...) {                         \
+    fprintf(stderr, format __VA_OPT__(, __VA_ARGS__)); \
+}
 
 #define put_error(error_msg, ...) {               \
     eprintf("Error:\n  ");                        \
