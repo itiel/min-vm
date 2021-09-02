@@ -344,7 +344,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Sumar <strong><em>a</em></strong> mÃ¡s <strong><em>b</em></strong> y guardar el resultado en <strong><em>c</em></strong>
+            Sumar <strong><em>a</em></strong> mÃ¡s <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>c</em></strong>
         </td>
     </tr>
     <tr>
@@ -359,7 +360,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Sumar <strong><em>a</em></strong> mÃ¡s <strong><em>b</em></strong> y guardar el resultado en <strong><em>a</em></strong>
+            Sumar <strong><em>a</em></strong> mÃ¡s <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>a</em></strong>
         </td>
     </tr>
     <tr>
@@ -374,7 +376,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Sumar <strong><em>a</em></strong> mÃ¡s <strong><em>b</em></strong> y guardar el resultado en <strong><em>b</em></strong>
+            Sumar <strong><em>a</em></strong> mÃ¡s <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>b</em></strong>
         </td>
     </tr>
     <tr>
@@ -393,7 +396,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Restarle <strong><em>a</em></strong> a <strong><em>b</em></strong> y guardar el resultado en <strong><em>c</em></strong>
+            Restarle <strong><em>a</em></strong> a <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>c</em></strong>
         </td>
     </tr>
     <tr>
@@ -407,7 +411,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Restarle <strong><em>a</em></strong> a <strong><em>b</em></strong> y guardar el resultado en <strong><em>a</em></strong>
+            Restarle <strong><em>a</em></strong> a <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>a</em></strong>
         </td>
     </tr>
     <tr>
@@ -421,7 +426,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Restarle <strong><em>a</em></strong> a <strong><em>b</em></strong> y guardar el resultado en <strong><em>b</em></strong>
+            Restarle <strong><em>a</em></strong> a <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>b</em></strong>
         </td>
     </tr>
     <tr>
@@ -436,7 +442,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Dividir <strong><em>a</em></strong> entre <strong><em>b</em></strong> y guardar el resultado en <strong><em>c</em></strong>
+            Dividir <strong><em>a</em></strong> entre <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>c</em></strong>
         </td>
     </tr>
     <tr>
@@ -449,7 +456,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Dividir <strong><em>a</em></strong> entre <strong><em>b</em></strong> y guardar el resultado en <strong><em>a</em></strong>
+            Dividir <strong><em>a</em></strong> entre <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>a</em></strong>
         </td>
     </tr>
     <tr>
@@ -462,7 +470,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Dividir <strong><em>a</em></strong> entre <strong><em>b</em></strong> y guardar el resultado en <strong><em>b</em></strong>
+            Dividir <strong><em>a</em></strong> entre <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>b</em></strong>
         </td>
     </tr>
     <tr>
@@ -481,7 +490,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Multiplicar <strong><em>a</em></strong> por <strong><em>b</em></strong> y guardar el resultado en <strong><em>c</em></strong>
+            Multiplicar <strong><em>a</em></strong> por <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>c</em></strong>
         </td>
     </tr>
     <tr>
@@ -495,7 +505,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Multiplicar <strong><em>a</em></strong> por <strong><em>b</em></strong> y guardar el resultado en <strong><em>a</em></strong>
+            Multiplicar <strong><em>a</em></strong> por <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>a</em></strong>
         </td>
     </tr>
     <tr>
@@ -509,7 +520,8 @@ La siguiente es una lista de las instrucciones que el *assembler* puede (o podrÃ
         </td>
         <td align="center">-</td>
         <td>
-            Multiplicar <strong><em>a</em></strong> por <strong><em>b</em></strong> y guardar el resultado en <strong><em>b</em></strong>
+            Multiplicar <strong><em>a</em></strong> por <strong><em>b</em></strong> y guardar el <br>
+            resultado en <strong><em>b</em></strong>
         </td>
     </tr>
     <thead>
