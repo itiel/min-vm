@@ -3,7 +3,6 @@ Author: Itiel Lopez - itiel@soyitiel.com
 Created: 05/08/2021
 -->
 
-
 > :warning: **Warning:** Most of this document is a draft. May contain inaccurate information. Read with caution.
 
 # Welcome to min-vm
@@ -12,7 +11,7 @@ An experimental VM hand-crafted with love. :heart:
 
 * [Leer este documento en español :mexico:](readmes/LEEME.md)
 
-## Intro :star2:
+## :star2: Intro
 
 > Please excuse my english, it isn't my first language. Thank you. :pray:
 
@@ -22,30 +21,27 @@ I had heard about systems that function on their own VMs (like Java :coffee: or 
 
 So, *welcome to The Internet, have a look around*. :notes::sunglasses:
 
-## The VM :gear:
+## :gear: The VM
 
 [:construction: Some description]
 
-## The compiler :writing_hand:
-
-Technically an assembler, not a compiler, but it sounds *way cooler*. :sunglasses: 
-
-### The instruction set :dna:
+### :dna: The Instruction Set
 
 By convention, instruction names are at least 2 and not more than 4 characters long.
 
-The following is a list of the instructions the assembler is (or will be) able to interpret.
+The following is a list of instructions the assembler is (or will be) able to interpret.
 
 <!---
  Opcode | Inst Name(s)     | Description
 --------+------------------+-------------------------------------------
-  0x00  | nop, noop, nope, | No operation
+ 💤 No Operation
+  0x00  | nop, noop, nope, | Do nothing
           np
- Data
-  0x20  | load, loda, ld,  | Load value to a
-          lda 
-  0x21  | ldb              | Load value to b
-  0x22  | ldc              | Load value to c
+ 📝 Data
+  0x20  | load, loda, lod, | Load value to a
+          ld, lda 
+  0x21  | lodb, ldb        | Load value to b
+  0x22  | lodc, ldc        | Load value to c
   0x23  | laa, ldaa        | Load data from a to a
   0x24  | lab, ldab        | Load data from a to b
   0x25  | lac, ldac        | Load data from a to c
@@ -55,11 +51,11 @@ The following is a list of the instructions the assembler is (or will be) able t
   0x29  | lca, ldca        | Load data from c to a
   0x2A  | lcb, ldcb        | Load data from c to b
   0x2B  | lcc, ldcc        | Load data from c to c
- Logic
+ ☑ Logic
   0x40  | and, cmp, comp   | Compare a to b and store result in c
   0x41  | exor, eor, xor,  | Exclusive-or a to b and store result in c
         | xo, xr
- Arithmetics
+ ➗ Arithmetics
   0x60  | add, ad, sum,    | Add a plus b and store result in c
         | sm, addc, adc, 
         | sumc, smc
@@ -81,7 +77,7 @@ The following is a list of the instructions the assembler is (or will be) able t
           mlc
   0x6A  | mlta, mula, mla  | Multiply a by b and store result in a
   0x6B  | mltb, mulb, mlb  | Multiply a by b and store result in b
- Halt                                                                                                           |
+ 🛑 Halt
   0xFF  | halt, hlt, stop, | Stop simulation
         | stp
 -->
@@ -95,6 +91,13 @@ The following is a list of the instructions the assembler is (or will be) able t
             <th>Description</th>
         </tr>
     </thead>
+    <thead>
+        <tr>
+            <th colspan="4">
+                <em>:zzz: No Operation</em>
+            </th>
+        </tr>
+    </thead>
     <tr>
         <td align="center">
             <code>0x00</code>
@@ -106,12 +109,12 @@ The following is a list of the instructions the assembler is (or will be) able t
             <code>np</code>
         </td>
         <td align="center">-</td>
-        <td>No operation</td>
+        <td>Do nothing</td>
     </tr>
     <thead>
         <tr>
             <th colspan="4">
-                <i>Data</i>
+                <em>:pencil: Data</em>
             </th>
         </tr>
     </thead>
@@ -121,8 +124,10 @@ The following is a list of the instructions the assembler is (or will be) able t
         </td>
         <td>
             <code>load</code>, 
-            <code>loda</code>, 
+            <code>loda</code>,
+            <code>lod</code>, 
             <code>ld</code>,
+            <br> 
             <code>lda</code>, 
         </td>
         <td align="center">
@@ -282,7 +287,7 @@ The following is a list of the instructions the assembler is (or will be) able t
     <thead>
         <tr>
             <th colspan="4">
-                <i>Logic</i>
+                <em>:ballot_box_with_check: Logic</em>
             </th>
         </tr>
     </thead>
@@ -314,13 +319,13 @@ The following is a list of the instructions the assembler is (or will be) able t
         </td>
         <td align="center">-</td>
         <td>
-            <i>Exclusive-or</i> <strong><em>a</em></strong> to <strong><em>b</em></strong> and store result in <strong><em>c</em></strong>
+            <em>Exclusive-or</em> <strong><em>a</em></strong> to <strong><em>b</em></strong> and store result in <strong><em>c</em></strong>
         </td>
     </tr>
     <thead>
         <tr>
             <th colspan="4">
-                <i>Arithmetics</i>
+                <em>:heavy_division_sign: Arithmetics</em>
             </th>
         </tr>
     </thead>
@@ -512,7 +517,7 @@ The following is a list of the instructions the assembler is (or will be) able t
     <thead>
         <tr>
             <th colspan="4">
-                <i>Arithmetics</i>
+                <em>:stop_sign: Halt</em>
             </th>
         </tr>
     </thead>
@@ -533,10 +538,14 @@ The following is a list of the instructions the assembler is (or will be) able t
     </tr>
 </table>
 
-## Useful sources
+## :writing_hand: The compiler
+
+Technically an assembler, not a compiler, but it sounds *way cooler*. :sunglasses: 
+
+## :books: Useful References
 
 [:construction: Some description]
 
-### Sources of inspiration
+### :sparkles: Sources of Inspiration
 
 [:construction: Some description]

@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <core/inst.h>
 #include "vm.h"
-#include "inst.h"
 
 minvm_Register * minvm_Register_Create () {
 
@@ -84,100 +84,100 @@ void minvm_VM_ExecuteInstruction (minvm_RegisterGroup * regs, minvm_UnsWord * in
 
         /* No operation */ 
 
-        case _INST_NOOP: /* nop */ 
+        case MVM_INST_OP_NOOP: /* nop */ 
         default:
             break;
 
         /* Data */
         
-        case _INST_LDA: /* ld #val */
+        case MVM_INST_OP_LDA: /* ld #val */
             regs->a_reg->data = inst[1];
             break;
-        case _INST_LDB: /* ldb #val */
+        case MVM_INST_OP_LDB: /* ldb #val */
             regs->b_reg->data = inst[1];
             break;
-        case _INST_LDC: /* ldc #val */
+        case MVM_INST_OP_LDC: /* ldc #val */
             regs->c_reg->data = inst[1];
             break;
-        case _INST_LAA: /* laa */
+        case MVM_INST_OP_LAA: /* laa */
             regs->a_reg->data = regs->a_reg->data;
             break;
-        case _INST_LAB: /* lab */
+        case MVM_INST_OP_LAB: /* lab */
             regs->a_reg->data = regs->b_reg->data;
             break;
-        case _INST_LAC: /* lac */
+        case MVM_INST_OP_LAC: /* lac */
             regs->a_reg->data = regs->c_reg->data;
             break;
-        case _INST_LBA: /* lba */
+        case MVM_INST_OP_LBA: /* lba */
             regs->b_reg->data = regs->a_reg->data;
             break;
-        case _INST_LBB: /* lbb */
+        case MVM_INST_OP_LBB: /* lbb */
             regs->b_reg->data = regs->b_reg->data;
             break;
-        case _INST_LBC: /* lbc */
+        case MVM_INST_OP_LBC: /* lbc */
             regs->b_reg->data = regs->c_reg->data;
             break;
-        case _INST_LCA: /* lca */
+        case MVM_INST_OP_LCA: /* lca */
             regs->c_reg->data = regs->a_reg->data;
             break;
-        case _INST_LCB: /* lcb */
+        case MVM_INST_OP_LCB: /* lcb */
             regs->c_reg->data = regs->b_reg->data;
             break;
-        case _INST_LCC: /* lcc */
+        case MVM_INST_OP_LCC: /* lcc */
             regs->c_reg->data = regs->c_reg->data;
             break;
 
         /* Logic */
         
-        case _INST_AND: /* and */
+        case MVM_INST_OP_AND: /* and */
             regs->c_reg->data = regs->a_reg->data == regs->b_reg->data;
             break;
-        case _INST_XOR: /* xor */
+        case MVM_INST_OP_XOR: /* xor */
             regs->c_reg->data = regs->a_reg->data ^ regs->b_reg->data;
             break;
         
         /* Arithmetics */
         
-        case _INST_ADD: /* add */
+        case MVM_INST_OP_ADD: /* add */
             regs->c_reg->data = regs->a_reg->data + regs->b_reg->data;
             break;
-        case _INST_ADA: /* adda */
+        case MVM_INST_OP_ADA: /* adda */
             regs->a_reg->data = regs->a_reg->data + regs->b_reg->data;
             break;
-        case _INST_ADB: /* addb */
+        case MVM_INST_OP_ADB: /* addb */
             regs->b_reg->data = regs->a_reg->data + regs->b_reg->data;
             break;
-        case _INST_SUBT: /* subt */
+        case MVM_INST_OP_SUBT: /* subt */
             regs->c_reg->data = regs->b_reg->data - regs->a_reg->data;
             break;
-        case _INST_SUBA: /* sbta */
+        case MVM_INST_OP_SUBA: /* sbta */
             regs->a_reg->data = regs->b_reg->data - regs->a_reg->data;
             break;
-        case _INST_SUBB: /* sbtb */
+        case MVM_INST_OP_SUBB: /* sbtb */
             regs->b_reg->data = regs->b_reg->data - regs->a_reg->data;
             break;
-        case _INST_DIV: /* div */
+        case MVM_INST_OP_DIV: /* div */
             regs->c_reg->data = regs->a_reg->data / regs->b_reg->data;
             break;
-        case _INST_DIVA: /* diva */
+        case MVM_INST_OP_DIVA: /* diva */
             regs->a_reg->data = regs->a_reg->data / regs->b_reg->data;
             break;
-        case _INST_DIVB: /* divb */
+        case MVM_INST_OP_DIVB: /* divb */
             regs->b_reg->data = regs->a_reg->data / regs->b_reg->data;
             break;
-        case _INST_MULT: /* mult */
+        case MVM_INST_OP_MULT: /* mult */
             regs->c_reg->data = regs->a_reg->data * regs->b_reg->data;
             break;
-        case _INST_MULA: /* mlta */
+        case MVM_INST_OP_MULA: /* mlta */
             regs->a_reg->data = regs->a_reg->data * regs->b_reg->data;
             break;
-        case _INST_MULB: /* mltb */
+        case MVM_INST_OP_MULB: /* mltb */
             regs->b_reg->data = regs->a_reg->data * regs->b_reg->data;
             break;
 
         /* Halt */
         
-        case _INST_HALT: 
+        case MVM_INST_OP_HALT: 
             /* Stop simulation */
             break;
     }
