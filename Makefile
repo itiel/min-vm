@@ -1,10 +1,11 @@
 CC    = gcc
 STD   = c99
-FLAGS = -std=$(STD) -I./ -Wall
+FLAGS = -std=$(STD) -Isrc/ -Wall
 
 ## Tests ##
 
 TEST_DIR = test
+SRC_DIR  = src
 
 # Assembler test
 
@@ -13,7 +14,7 @@ ASM_DIR = $(TEST_DIR)/$(ASM_NM)
 ASM_EX  = $(ASM_DIR)/tok-scan-test.mvs
 ASM_OUT = $(ASM_DIR)/$(ASM_NM).out
 ASM_IN  = $(ASM_DIR)/$(ASM_NM).c
-ASM_DEP = core/asm/asm.c
+ASM_DEP = $(SRC_DIR)/core/asm/asm.c
 
 asm-test:
 	$(CC) $(FLAGS) -o $(ASM_OUT) $(ASM_IN) $(ASM_DEP)
