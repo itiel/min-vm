@@ -1,7 +1,7 @@
-/*    
+/* 
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 18/05/2021
- */
+*/
 
 /*
  . Fixed width number types

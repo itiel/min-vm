@@ -1,16 +1,7 @@
-/*    
+/* 
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 11/08/2021
 */
-
-#ifndef _INST_H_
-#define _INST_H_
-
-/* -- Defines -- */
-
-#ifndef NULL
-#define NULL 0
-#endif
 
 /*
  .  Opcode | Inst Name(s)     | Description
@@ -63,206 +54,249 @@
  .         | stp
 */
 
-/* -- Op Codes -- */
+#ifndef _INST_H_
+#define _INST_H_
 
-enum MVM_INST_OP_SET {
+/* -- Includes -- */
 
-    // No Operation 
-    
-    MVM_INST_OP_NOP = 0x00,
+#include <util/fwn.h>
+#include <util/null.h>
+#include <util/strcmp-s.h>
 
-    // Data 
+/* -- Types -- */
 
-    MVM_INST_OP_LDA = 0x20,
-    MVM_INST_OP_LDB = 0x21,
-    MVM_INST_OP_LDC = 0x22,
-    MVM_INST_OP_LAA = 0x23,
-    MVM_INST_OP_LAB = 0x24,
-    MVM_INST_OP_LAC = 0x25,
-    MVM_INST_OP_LBA = 0x26,
-    MVM_INST_OP_LBB = 0x27,
-    MVM_INST_OP_LBC = 0x28,
-    MVM_INST_OP_LCA = 0x29,
-    MVM_INST_OP_LCB = 0x2A,
-    MVM_INST_OP_LCC = 0x2B,
-    
-    // Logic 
-    
-    MVM_INST_OP_AND = 0x40,
-    MVM_INST_OP_XOR = 0x41,
+typedef struct mvm_inst_t {
+    const u32 op;
+    const i8  ** names;
+} mvm_inst_t;
 
-    // Arithmetics 
+/*
+ . `_mvm_inst_def()`
+ . 
+ . Defines an instruction's data (name, OP Code & 
+ . name representation list) in separate variables and 
+ . in a `mvm_inst_t` variable.
+ . 
+ . The nomenclature is as follows (`INS` being the 
+ . instruction's name, which should preferably be
+ . 3 characters long):
+ . 
+ .     - OP Code:       `MVM_INST_OP_INS` (32 int)
+ .     - Name reprs:    `MVM_INST_NM_INS` (string list)
+ .     - Inst type var: `MVM_INST_INS`
+ . 
+ . All arguments after the second are part of name 
+ . representation list. The last one should be a `NULL`
+ . pointer to help with looping.
+ . 
+ . Example use:
+ . 
+ .     _mvm_inst_def(LDB, 0x21, "lodb", "ldb", NULL);
+ .         => 
+ .             MVM_INST_OP_LDB = 0x21
+ .             MVM_INST_NM_LDB = { "lodb", "ldb", NULL }
+ .             MVM_INST_LDB = { 
+ .                 MVM_INST_OP_LDB, 
+ .                 MVM_INST_NM_LDB 
+ .             }
+ . 
+ .     _mvm_inst_def(NUL, 0xFFFFFFFF, NULL);
+ .         => 
+ .             MVM_INST_OP_NUL = 0xFFFFFFFF
+ .             MVM_INST_NM_NUL = { NULL }
+ .             MVM_INST_NUL = { 
+ .                 MVM_INST_OP_NUL, 
+ .                 MVM_INST_NM_NUL 
+ .             }
+ . 
+*/
 
-    MVM_INST_OP_ADD = 0x60,
-    MVM_INST_OP_ADA = 0x61,
-    MVM_INST_OP_ADB = 0x62,
-    MVM_INST_OP_SUB = 0x63,
-    MVM_INST_OP_SBA = 0x64,
-    MVM_INST_OP_SBB = 0x65,
-    MVM_INST_OP_DIV = 0x66,
-    MVM_INST_OP_DVA = 0x67,
-    MVM_INST_OP_DVB = 0x68,
-    MVM_INST_OP_MUL = 0x69,
-    MVM_INST_OP_MLA = 0x6A,
-    MVM_INST_OP_MLB = 0x6B,
+#define _mvm_inst_def(_name, _op, _namelist...) \
+    const u32 MVM_INST_OP_##_name = _op;        \
+    const i8 * MVM_INST_NM_##_name[] = {        \
+        _namelist                               \
+    };                                          \
+    const mvm_inst_t MVM_INST_##_name = {       \
+        MVM_INST_OP_##_name,                    \
+        MVM_INST_NM_##_name                     \
+    };
 
-    // Halt 
+/* -- Instruction Definitions -- */
 
-    MVM_INST_OP_HLT = 0xFF,
+// Inst name max length 
 
-};
-
-/* -- Inst Names -- */
+#define MVM_INST_NM_MAXLEN 4
 
 // No Operation
 
-char * MVM_INST_NM_NOP[] = {
-    "nop","noop","nope","np", NULL
-};
+_mvm_inst_def(NOP, 0x00, 
+    "nop", "noop", "nope", "np", NULL);
 
 // Data
 
-char * MVM_INST_NM_LDA[] = {
-    "load", "loda", "lod", "ld", 
-    "lda", NULL 
-};
-char * MVM_INST_NM_LDB[] = {
-    "lodb", "ldb", NULL
-};
-char * MVM_INST_NM_LDC[] = {
-    "lodc", "ldc", NULL
-};
-char * MVM_INST_NM_LAA[] = {
-    "laa", "ldaa", NULL
-};
-char * MVM_INST_NM_LAB[] = {
-    "lab", "ldab", NULL
-};
-char * MVM_INST_NM_LAC[] = {
-    "lac", "ldac", NULL
-};
-char * MVM_INST_NM_LBA[] = {
-    "lba", "ldba", NULL
-};
-char * MVM_INST_NM_LBB[] = {
-    "lbb", "ldbb", NULL
-};
-char * MVM_INST_NM_LBC[] = {
-    "lbc", "ldbc", NULL
-};
-char * MVM_INST_NM_LCA[] = {
-    "lca", "ldca", NULL
-};
-char * MVM_INST_NM_LCB[] = {
-    "lcb", "ldcb", NULL
-};
-char * MVM_INST_NM_LCC[] = {
-    "lcc", "ldcc", NULL
-};
+_mvm_inst_def(LDA, 0x20, 
+    "load", "loda", "lod", "ld", "lda", NULL);
+_mvm_inst_def(LDB, 0x21, 
+    "lodb", "ldb", NULL);
+_mvm_inst_def(LDC, 0x22, 
+    "lodc", "ldc", NULL);
+_mvm_inst_def(LAA, 0x23, 
+    "laa", "ldaa", NULL);
+_mvm_inst_def(LAB, 0x24, 
+    "lab", "ldab", NULL);
+_mvm_inst_def(LAC, 0x25, 
+    "lac", "ldac", NULL);
+_mvm_inst_def(LBA, 0x26, 
+    "lba", "ldba", NULL);
+_mvm_inst_def(LBB, 0x27, 
+    "lbb", "ldbb", NULL);
+_mvm_inst_def(LBC, 0x28, 
+    "lbc", "ldbc", NULL);
+_mvm_inst_def(LCA, 0x29, 
+    "lca", "ldca", NULL);
+_mvm_inst_def(LCB, 0x2A, 
+    "lcb", "ldcb", NULL);
+_mvm_inst_def(LCC, 0x2B, 
+    "lcc", "ldcc", NULL);
+ 
+// Logic 
 
-// Logic
+_mvm_inst_def(AND, 0x40, 
+    "and", "cmp", "comp", NULL);
+_mvm_inst_def(XOR, 0x41, 
+    "exor", "eor", "xor", "xo", "xr", NULL);
 
-char * MVM_INST_NM_AND[] = {
-    "and", "cmp", "comp", NULL
-};
-char * MVM_INST_NM_XOR[] = {
-    "exor", "eor", "xor", "xo", 
-    "xr", NULL
-};
+// Arithmetics 
 
-// Arithmetics
+_mvm_inst_def(ADD, 0x60, 
+    "add", "ad", "sum", "sm", "addc", "adc", 
+    "sumc", "smc", NULL);
+_mvm_inst_def(ADA, 0x61, 
+    "adda", "ada", "suma", "sma", NULL);
+_mvm_inst_def(ADB, 0x62, 
+    "addb", "adb", "sumb", "smb", NULL);
+_mvm_inst_def(SUB, 0x63, 
+    "subt", "sbt", "sub", "sb", "sbtc", "subc", 
+    "sbc", NULL);
+_mvm_inst_def(SBA, 0x64, 
+    "sbta", "suba", "sba", NULL);
+_mvm_inst_def(SBB, 0x65, 
+    "sbtb", "subb", "sbb", NULL);
+_mvm_inst_def(DIV, 0x66, 
+    "div", "dv", "divc", "dvc", NULL);
+_mvm_inst_def(DVA, 0x67, 
+    "diva", "dva", NULL);
+_mvm_inst_def(DVB, 0x68, 
+    "divb", "dvb", NULL);
+_mvm_inst_def(MUL, 0x69, 
+    "mult", "mlt", "mul", "ml", "mltc", "mulc", 
+    "mlc", NULL);
+_mvm_inst_def(MLA, 0x6A, 
+    "mlta", "mula", "mla", NULL);
+_mvm_inst_def(MLB, 0x6B, 
+    "mltb", "mulb", "mlb", NULL);
 
-char * MVM_INST_NM_ADD[] = {
-    "add", "ad", "sum", "sm", "addc", 
-    "adc", "sumc", "smc", NULL
-};
-char * MVM_INST_NM_ADA[] = {
-    "adda", "ada", "suma", "sma", NULL
-};
-char * MVM_INST_NM_ADB[] = {
-    "addb", "adb", "sumb", "smb", NULL
-};
-char * MVM_INST_NM_SUB[] = {
-    "subt", "sbt", "sub", "sb", 
-    "sbtc", "subc", "sbc", NULL
-};
-char * MVM_INST_NM_SBA[] = {
-    "sbta", "suba", "sba", NULL
-};
-char * MVM_INST_NM_SBB[] = {
-    "sbtb", "subb", "sbb", NULL
-};
-char * MVM_INST_NM_DIV[] = {
-    "div", "dv", "divc", "dvc", NULL
-};
-char * MVM_INST_NM_DVA[] = {
-    "diva", "dva", NULL
-};
-char * MVM_INST_NM_DVB[] = {
-    "divb", "dvb", NULL
-};
-char * MVM_INST_NM_MUL[] = {
-    "mult", "mlt", "mul", "ml", 
-    "mltc", "mulc", "mlc", NULL
-};
-char * MVM_INST_NM_MLA[] = {
-    "mlta", "mula", "mla", NULL
-};
-char * MVM_INST_NM_MLB[] = {
-    "mltb", "mulb", "mlb", NULL
-};
+// Halt 
 
-// Halt
+_mvm_inst_def(HLT, 0xFF, 
+    "halt", "hlt", "stop", "stp", NULL);
 
-char * MVM_INST_NM_HLT[] = {
-    "halt", "hlt", "stop", "stp", NULL
-};
+// No valid OP Code (`MVM_INST_NUL`)
 
-char ** MVM_INST_NM_LIST[] = {
+_mvm_inst_def(NUL, 0xFFFFFFFF, NULL);
+
+/* -- Instruction Set -- */
+
+/*
+ . `MVM_INST_SET`
+ . 
+ . Should contain all of the instructions above,
+ . except for `MVM_INST_NUL`, and end with a `NULL`
+ . pointer to help with looping. 
+*/
+
+const mvm_inst_t * MVM_INST_SET[] = {
+
     // No Operation
 
-    MVM_INST_NM_NOP,
+    &MVM_INST_NOP,
 
-    // Data
-
-    MVM_INST_NM_LDA,
-    MVM_INST_NM_LDB,
-    MVM_INST_NM_LDC,
-    MVM_INST_NM_LAA,
-    MVM_INST_NM_LAB,
-    MVM_INST_NM_LAC,
-    MVM_INST_NM_LBA,
-    MVM_INST_NM_LBB,
-    MVM_INST_NM_LBC,
-    MVM_INST_NM_LCA,
-    MVM_INST_NM_LCB,
-    MVM_INST_NM_LCC,
+     // Data
+ 
+    &MVM_INST_LDA,
+    &MVM_INST_LDB,
+    &MVM_INST_LDC,
+    &MVM_INST_LAA,
+    &MVM_INST_LAB,
+    &MVM_INST_LAC,
+    &MVM_INST_LBA,
+    &MVM_INST_LBB,
+    &MVM_INST_LBC,
+    &MVM_INST_LCA,
+    &MVM_INST_LCB,
+    &MVM_INST_LCC, 
 
     // Logic
-
-    MVM_INST_NM_AND,
-    MVM_INST_NM_XOR,
+ 
+    &MVM_INST_AND,
+    &MVM_INST_XOR, 
 
     // Arithmetics
-
-    MVM_INST_NM_ADD,
-    MVM_INST_NM_ADA,
-    MVM_INST_NM_ADB,
-    MVM_INST_NM_SUB,
-    MVM_INST_NM_SBA,
-    MVM_INST_NM_SBB,
-    MVM_INST_NM_DIV,
-    MVM_INST_NM_DVA,
-    MVM_INST_NM_DVB,
-    MVM_INST_NM_MUL,
-    MVM_INST_NM_MLA,
-    MVM_INST_NM_MLB,
+ 
+    &MVM_INST_ADD,
+    &MVM_INST_ADA,
+    &MVM_INST_ADB,
+    &MVM_INST_SUB,
+    &MVM_INST_SBA,
+    &MVM_INST_SBB,
+    &MVM_INST_DIV,
+    &MVM_INST_DVA,
+    &MVM_INST_DVB,
+    &MVM_INST_MUL,
+    &MVM_INST_MLA,
+    &MVM_INST_MLB, 
 
     // Halt
+ 
+    &MVM_INST_HLT,
 
-    MVM_INST_NM_HLT,
+    // Null pointer
 
     NULL
+
 };
+
+/*
+ . `mvm_inst_op_find()`
+ . 
+ . A type of hash func that checks if string matches 
+ . an instruction's name representation and returns its 
+ . OP Code. If the string doesn't match any instruction, 
+ . returns `MVM_INST_OP_NUL`. Case insensitive.
+*/
+
+u32 mvm_inst_op_find (i8 * inst_name) {
+
+    for (int i = 0; MVM_INST_SET[i]; ++i) {
+ 
+        for (int j = 0; MVM_INST_SET[i]->names[j]; ++j) {
+
+            if (strcmp_case_s(
+                inst_name, 
+                (i8 *) MVM_INST_SET[i]->names[j],
+                MVM_INST_NM_MAXLEN + 1)) 
+            { 
+
+                return MVM_INST_SET[i]->op;
+ 
+            }
+
+        }
+ 
+    }
+
+    return MVM_INST_OP_NUL;
+
+}
 
 #endif /* #ifndef MVM_INST_OP_H */

@@ -8,6 +8,8 @@
 #include <stdio.h>
 
 #include <util/fwn.h>
+#include <util/bool.h>
+#include <util/chval.h>
 #include <util/err.h>
 #include <util/choc.h>
 
@@ -16,42 +18,6 @@
 #include "asm-tokenizer.h"
 
 /* -- Macro definitions -- */
-
-// Booleans
-
-#define TRUE  1
-#define FALSE 0
-
-// Character validation macros
-
-// ch_is_alph      : a-Z
-// ch_is_dig       : 0-9
-// ch_is_alphnum   : a-Z || 0-9
-// ch_is_name_lead : _ || a-Z 
-// ch_is_name      : _ || a-Z || 0-9
-// ch_is_bin       : 0 || 1
-// ch_is_oct       : 0-7
-// ch_is_hex       : 0-9 || a-F 
-
-#define      ch_is_alph(_ch) \
-    ((_ch >= 'a' && _ch <= 'z') || \
-    (_ch >= 'A' && _ch <= 'Z')) 
-#define       ch_is_dig(_ch) \
-    (_ch >= '0' && _ch <= '9' )
-#define   ch_is_alphnum(_ch) \
-    (ch_is_alph(_ch) || ch_is_dig(_ch))
-#define ch_is_name_lead(_ch) \
-    (_ch == '_' || ch_is_alph(_ch))
-#define      ch_is_name(_ch) \
-    (_ch == '_' || ch_is_alphnum(_ch))
-#define       ch_is_bin(_ch) \
-    (_ch == '0' || _ch == '1')
-#define       ch_is_oct(_ch) \
-    (_ch >= '0' && _ch <= '7')
-#define       ch_is_hex(_ch) \
-    (ch_is_dig(_ch) || \
-    (_ch >= 'a' && _ch <= 'f') || \
-    (_ch >= 'A' && _ch <= 'F'))
 
 // Separator characters
 
@@ -226,7 +192,6 @@ i32 mvm_asm_assemble (mvm_asm_assembler_t * assembler) {
         return FALSE;
     }
 
-    assembler->status = MVM_AES_IN_USE;
 
     if (!mvm_asm_tokenizer_init(&tokenizer, assembler)) {
 
@@ -239,10 +204,12 @@ i32 mvm_asm_assemble (mvm_asm_assembler_t * assembler) {
 
     }
 
+    assembler->status = MVM_AES_IN_USE;
+
     while ((result = mvm_asm_tokenize_next(&tokenizer, &token))) {
 
         if (result == -1) {
-     
+ 
             put_error_method( 
                 "mvm_asm_assemble", 
                 "Something unexpected happened while tokenizing file (%s).",
@@ -524,7 +491,7 @@ i32 mvm_asm_tokenizer_init (
  
         put_error_method( 
             "mvm_asm_tokenizer_init", 
-            "Assembler element needs to be initialized."
+            "Assembler element should be initialized."
         );
  
         return FALSE;
@@ -677,9 +644,9 @@ i32 mvm_asm_tokenize_next (
     if (tokenizer->data.redo_char) {
 
         tokenizer->data.redo_char = FALSE;
-        
+ 
         goto redo_char;
-    
+ 
     }
 
     while ((ch = getc(tokenizer->assembler->file)) != EOF) {
@@ -1043,7 +1010,7 @@ i32 mvm_asm_tokenize_next (
                     );
 
                 } else {
-                    
+ 
                     mvm_asm_tokenize_error(
                         tokenizer,
                         "Ilegal line break in character literal"

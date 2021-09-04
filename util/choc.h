@@ -4,6 +4,14 @@
 */
 
 /*
+ . Check for the occurrence of a character 
+ . inside a string
+*/
+
+#ifndef _CHOC_H_
+#define _CHOC_H_
+
+/*
  . char_occur()
  . 
  . Recomended use:
@@ -11,27 +19,27 @@
  .     #include <stdio.h>
  . 
  .     int main() {
- .         
+ . 
  .         if (char_occur('c', "ABCDabcd")) {
  . 
  .             printf("Character found\n");
  . 
- .             return 0;    
+ .             return 0; 
  . 
  .         }
  . 
  .         printf("Character not found\n");
  . 
  .         return 0;
- .     }    
+ .     } 
 */
 
-int char_occur (char ch, char * list) {
+int char_occur (char ch, char * str) {
 
-    for (; *list; list++) {
+    for (; *str; str++) {
 
-        if (ch == *list) {
-            
+        if (ch == *str) {
+ 
             return 1;
 
         }
@@ -39,3 +47,5 @@ int char_occur (char ch, char * list) {
 
     return 0;
 }
+
+#endif /* #ifndef _CHOC_H_ */

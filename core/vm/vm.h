@@ -1,8 +1,7 @@
-/*    
+/* 
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 11/08/2021
- . Last updated: 11/08/2021
- */
+*/
 
 #ifndef _VM_H_
 #define _VM_H_
@@ -17,7 +16,7 @@ typedef struct minvm_Register {
 } minvm_Register;
 
 typedef struct minvm_RegisterGroup {
-    
+ 
     minvm_Register * a_reg;
     minvm_Register * b_reg;
     minvm_Register * c_reg;

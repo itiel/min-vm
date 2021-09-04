@@ -1,8 +1,7 @@
-/*    
+/* 
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 29/07/2021
- . Last updated: 11/08/2021
- */
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -65,7 +64,7 @@ minvm_VM * minvm_VM_Create () {
     minvm_VM * vm = malloc(sizeof(minvm_VM));
 
     vm->regs = minvm_RegisterGroup_Create();
-    
+ 
     return vm;
 }
 
@@ -89,7 +88,7 @@ void minvm_VM_ExecuteInstruction (minvm_RegisterGroup * regs, minvm_UnsWord * in
             break;
 
         /* Data */
-        
+ 
         case MVM_INST_OP_LDA: /* ld #val */
             regs->a_reg->data = inst[1];
             break;
@@ -128,16 +127,16 @@ void minvm_VM_ExecuteInstruction (minvm_RegisterGroup * regs, minvm_UnsWord * in
             break;
 
         /* Logic */
-        
+ 
         case MVM_INST_OP_AND: /* and */
             regs->c_reg->data = regs->a_reg->data == regs->b_reg->data;
             break;
         case MVM_INST_OP_XOR: /* xor */
             regs->c_reg->data = regs->a_reg->data ^ regs->b_reg->data;
             break;
-        
+ 
         /* Arithmetics */
-        
+ 
         case MVM_INST_OP_ADD: /* add */
             regs->c_reg->data = regs->a_reg->data + regs->b_reg->data;
             break;
@@ -176,7 +175,7 @@ void minvm_VM_ExecuteInstruction (minvm_RegisterGroup * regs, minvm_UnsWord * in
             break;
 
         /* Halt */
-        
+ 
         case MVM_INST_OP_HALT: 
             /* Stop simulation */
             break;

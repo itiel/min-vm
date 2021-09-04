@@ -1,4 +1,4 @@
-/*    
+/* 
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 12/08/2021
 */
@@ -12,7 +12,7 @@ int main (int argc, char const ** argv) {
     mvm_asm_assembler_t assembler;
 
     if (argc > 1) {
-        
+ 
         file_name = (char *) argv[1];
 
         if (!mvm_asm_assembler_init(&assembler,  file_name)) {
