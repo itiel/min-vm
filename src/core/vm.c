@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <core/inst.h>
+#include "inst.h"
 #include "vm.h"
 
 minvm_Register * minvm_Register_Create () {
