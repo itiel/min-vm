@@ -14,8 +14,8 @@
 #include <util/choc.h>
 
 #include "asm.h"
-#include "asm-token.h"
-#include "asm-tokenizer.h"
+#include "asm/token.h"
+#include "asm/tokenizer.h"
 
 /* -- Macro definitions -- */
 

@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include <core/inst/inst.h>
+#include <core/inst.h>
 
 int main () {
 
