@@ -16,20 +16,19 @@
 
 #define eputchar(ch) putc(ch, stderr)
 
-#define eprintf(format, ...) {                         \
-    fprintf(stderr, format __VA_OPT__(,) __VA_ARGS__); \
+#define eprintf(format, args...) \
+    fprintf(stderr, format , ## args)
+
+#define put_error(error_msg, args...) { \
+    eprintf("Error:\n  ");              \
+    eprintf(error_msg , ## args);       \
+    eprintf("\n");                      \
 }
 
-#define put_error(error_msg, ...) {               \
-    eprintf("Error:\n  ");                        \
-    eprintf(error_msg __VA_OPT__(,) __VA_ARGS__); \
-    eprintf("\n");                                \
-}
-
-#define put_error_method(method_name, error_msg, ...) { \
-    eprintf("Error in %s():\n  ", method_name);         \
-    eprintf(error_msg __VA_OPT__(,) __VA_ARGS__);       \
-    eprintf("\n");                                      \
+#define put_error_method(method_name, error_msg, args...) {  \
+    eprintf("Error in %s():\n  ", method_name);              \
+    eprintf(error_msg , ## args);                            \
+    eprintf("\n");                                           \
 }
 
 #endif /* #ifndef _ERR_H_ */

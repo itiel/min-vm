@@ -237,7 +237,7 @@ i32 mvm_asm_token_yield (
  
         put_error_method( 
             "mvm_asm_token_yield", 
-            "Tokenizer pointer should not be NULL.", 
+            "Tokenizer pointer should not be NULL."
         );
 
         return FALSE;
@@ -248,7 +248,7 @@ i32 mvm_asm_token_yield (
  
         put_error_method( 
             "mvm_asm_token_yield", 
-            "Token pointer should not be NULL.", 
+            "Token pointer should not be NULL."
         );
 
         return FALSE;
@@ -600,7 +600,7 @@ i32 mvm_asm_tokenize_next (
  
         put_error_method( 
             "mvm_asm_tokenize_next", 
-            "Tokenizer pointer should not be NULL.", 
+            "Tokenizer pointer should not be NULL."
         );
 
         return -1;
@@ -611,7 +611,7 @@ i32 mvm_asm_tokenize_next (
  
         put_error_method( 
             "mvm_asm_tokenize_next", 
-            "Token pointer should not be NULL.", 
+            "Token pointer should not be NULL."
         );
 
         return -1;
