@@ -20,6 +20,11 @@ typedef struct mvm_asm_assembler_t {
 
 } mvm_asm_assembler_t;
 
+typedef struct mvm_asm_token_t mvm_asm_token_t;
+typedef struct mvm_asm_token_reader_t mvm_asm_token_reader_t;
+typedef struct mvm_asm_tokenizer_data_t mvm_asm_tokenizer_data_t;
+typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
+
 /* -- Functions -- */
 
 int mvm_asm_assembler_init      (mvm_asm_assembler_t * assembler, char * file_name);

@@ -1,6 +1,10 @@
 ;; Author: Itiel Lopez - itiel@soyitiel.com
 ;; Created: ‎27/08/2021
 
+;; ------------ ;;
+;;  Token test  ;;
+;; ------------ ;;
+
 ;; -- Breaks -- ;;
 
 ; 3 consecutive breaks starting now
@@ -45,15 +49,25 @@ _name3      ; Underscore leading name
 
 ;; -- Signs -- ;;
 
-+           ; Plus sign
--           ; Minus sign
-=           ; "Equals to" sign
-:           ; Colon
-+++---      ; Multiple signs
-a+b         ; Names and signs
-a + b +c+ d ; Names and signs
-
-;$%&/()?!    ; Not (yet) recognized signs/characters
+.           ; Period 
++           ; Plus sign 
+-           ; Minus sign 
+=           ; "Equals to" sign 
+$           ; Dollar sign 
+@           ; "At" symbol 
+:           ; Colon  
+#           ; Hash symbol 
+%           ; Percentage symbol 
+.+-=$@:#    ; Multiple signs
+.org        ; A directive
+.asciiz     ; Another directive
+$var1 = 0x0 ; Variable declaration
+@label_1:   ; Label declaration
+ldb #0x100  ; Immediate value assigning
+lda %b      ; Loading to a the value at the addres in b 
+a+b         ; Names and signs with no space between
+a + b +c+ d ; Names and signs with varying space
+&/()?!|*,   ; Not (yet) recognized signs/characters
 
 ;; -- String and character literals -- ;;
 

@@ -25,10 +25,10 @@
     eprintf("\n");                      \
 }
 
-#define put_error_method(method_name, error_msg, args...) {  \
-    eprintf("Error in %s():\n  ", method_name);              \
-    eprintf(error_msg , ## args);                            \
-    eprintf("\n");                                           \
+#define put_error_method(method_name, error_msg, args...) { \
+    eprintf("Error in %s():\n  ", method_name);             \
+    eprintf(error_msg , ## args);                           \
+    eprintf("\n");                                          \
 }
 
 #endif /* #ifndef _ERR_H_ */

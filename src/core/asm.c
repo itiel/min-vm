@@ -27,16 +27,19 @@
 // '\n' - new line
 // '\r' - carriage return
 // '.'  - period
-// '$'  - dollar sign
 // '+'  - plus sign
 // '-'  - minus sign
 // '='  - equals sign
+// '$'  - dollar sign
+// '@'  - at symbol
+// ':'  - colon
+// '#'  - hash symbol
+// '%'  - percentage symbol
 // "'"  - single quote
 // '"'  - double quote
-// ':'  - colon
 // ';'  - semicolon
 
-#define SEPCHARSET (" \t\f\n\r.&+-=\"':;")
+#define SEPCHARSET (" \t\f\n\r.+-=$@:#%\"';")
 
 // ch_is_sep : ch in SEPCHARSET
 
@@ -261,7 +264,7 @@ i32 mvm_asm_token_yield (
     token->col       = tokenizer->data.tok_col;
     token->type      = tokenizer->data.tok_type;
 
-    if (tokenizer->data.tok_type == MVM_ATT_SIGN) {
+    if (tokenizer->data.cur_state == MVM_ATDS_SIGN) {
 
         token->len = 1;
 
@@ -381,7 +384,15 @@ i32 mvm_asm_token_typename_show (mvm_asm_token_t * token) {
         case MVM_ATT_NUM_BIN: type_name = "BINARY";  break;
         case MVM_ATT_NUM_OCT: type_name = "OCTAL";   break;
         case MVM_ATT_NUM_HEX: type_name = "HEXA";    break;
-        case MVM_ATT_SIGN:    type_name = "SIGN";    break;
+        case MVM_ATT_SGN_PR:  type_name = "PERIOD";  break;
+        case MVM_ATT_SGN_PL:  type_name = "PLUS";    break;
+        case MVM_ATT_SGN_MN:  type_name = "MINUS";   break;
+        case MVM_ATT_SGN_EQ:  type_name = "EQUALS";  break;
+        case MVM_ATT_SGN_DL:  type_name = "DOLLAR";  break;
+        case MVM_ATT_SGN_AT:  type_name = "AT";      break;
+        case MVM_ATT_SGN_CL:  type_name = "COLON";   break;
+        case MVM_ATT_SGN_HS:  type_name = "HASH";    break;
+        case MVM_ATT_SGN_PC:  type_name = "PERCENT"; break;
         case MVM_ATT_STRING:  type_name = "STRING";  break;
         case MVM_ATT_CHAR:    type_name = "CHAR";    break;
         case MVM_ATT_COMMENT: type_name = "COMMENT"; break;
@@ -530,7 +541,7 @@ i32 mvm_asm_tokenize_error (
         "Tokenizer error @ (%ld:%ld):\n" \
         "In file %s\n" \
         "  %s\n",
-        tokenizer->data.cur_row + 1, 
+        tokenizer->data.cur_row + 2, 
         tokenizer->data.cur_col + 1,
         tokenizer->assembler->file_name,
         reason
@@ -662,9 +673,6 @@ i32 mvm_asm_tokenize_next (
 
         // Just starting or after on a separator char
 
-        // TODO: Implement scanning labels starting with '.' 
-        //       and var names starting with '$' 
-
         case MVM_ATDS_BLANK:
 
             switch (ch) {
@@ -689,14 +697,30 @@ i32 mvm_asm_tokenize_next (
 
                 return 1;
 
-            case '+': case '-': case '=': case ':':
+            case '.': case '+': case '-': case '=': 
+            case '$': case '@': case ':': case '#':
+            case '%': 
 
-                tokenizer->data.tok_type  = MVM_ATT_SIGN;
+                tokenizer->data.cur_state = MVM_ATDS_SIGN;
+
                 tokenizer->data.tok_start = tokenizer->data.ch_idx;
                 tokenizer->data.tok_col   = tokenizer->data.cur_col;
 
+                tokenizer->data.tok_type = 
+                    ch == '.' ? MVM_ATT_SGN_PR :
+                    ch == '+' ? MVM_ATT_SGN_PL :
+                    ch == '-' ? MVM_ATT_SGN_MN :
+                    ch == '=' ? MVM_ATT_SGN_EQ :
+                    ch == '$' ? MVM_ATT_SGN_DL :
+                    ch == '@' ? MVM_ATT_SGN_AT :
+                    ch == ':' ? MVM_ATT_SGN_CL :
+                    ch == '#' ? MVM_ATT_SGN_HS :
+                    MVM_ATT_SGN_PC;
+
                 if (!mvm_asm_token_yield(tokenizer, token)) 
                     goto tok_yld_err;
+
+                tokenizer->data.cur_state = MVM_ATDS_BLANK;
 
                 return 1;
 
@@ -766,9 +790,6 @@ i32 mvm_asm_tokenize_next (
                 tokenizer,
                 "Invalid syntax"
             );
-
-            printf("ftell = %ld\n", ftell(tokenizer->assembler->file));
-            printf("ch = %d = %c\n", ch, ch);
 
             return -1;
 

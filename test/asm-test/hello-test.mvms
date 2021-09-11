@@ -1,0 +1,27 @@
+;; Author: Itiel Lopez - itiel@soyitiel.com
+;; Created: 10/09/2021
+
+;; ------------------------- ;;
+;;  "Hello, world!" program  ;;
+;; ------------------------- ;;
+
+$START_ADR  = 0x100
+$PRINT_PORT = 0x6000
+
+    .org    START_ADR   ; Next line will be at the address in START_ADR
+
+@_start:
+    ldb     #hello_msg  ; Load addres of @hello_msg to reg %b
+
+@print_hello:
+    lda     %b          ; Load value at the addres in reg %b to reg %a
+    jmz     loop_4ever  ; If the value read is zero, jump to @loop_4ever
+    sta     PRINT_PORT  ; Load value in reg %a to the addres in $PRINT_PORT
+    incb                ; Increment by one the value in reg %b
+    jmp     print_hello ; Loop to the begining of @print_hello
+
+@loop_4ever:
+    jmp     loop_4ever  ; Loop forever
+
+@hello_msg:
+    .asciiz "Hello, world!\n"

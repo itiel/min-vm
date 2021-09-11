@@ -10,6 +10,8 @@
 
 #include <util/fwn.h>
 
+#include "../asm.h"
+
 /* -- Enums -- */
 
 // Tokenizer data state
@@ -23,6 +25,7 @@ typedef enum {
     MVM_ATDS_NUM_BIN, // binary number
     MVM_ATDS_NUM_OCT, // octal number
     MVM_ATDS_NUM_HEX, // hexadecimal number
+    MVM_ATDS_SIGN,    // various signs (+-=$@:#)
     MVM_ATDS_STRING,  // double quoted string literal
     MVM_ATDS_CHAR,    // single quoted char literal
     MVM_ATDS_COMMENT, // semicolon leading comment
@@ -30,9 +33,6 @@ typedef enum {
 } mvm_asm_tokenizer_data_state_t;
 
 /* -- Types -- */
-
-typedef struct mvm_asm_assembler_t mvm_asm_assembler_t;
-typedef struct mvm_asm_token_t mvm_asm_token_t;
 
 typedef struct mvm_asm_tokenizer_data_t {
 

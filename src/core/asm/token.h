@@ -10,6 +10,8 @@
 
 #include <util/fwn.h>
 
+#include "../asm.h"
+
 /* -- Enums -- */
 
 // Token types
@@ -23,7 +25,15 @@ typedef enum {
     MVM_ATT_NUM_BIN, // binary number
     MVM_ATT_NUM_OCT, // octal number
     MVM_ATT_NUM_HEX, // hexadecimal number
-    MVM_ATT_SIGN,    // plus, minus and equals signs (+-=)
+    MVM_ATT_SGN_PR,  // period (.)
+    MVM_ATT_SGN_PL,  // plus sign (+)
+    MVM_ATT_SGN_MN,  // minus sign (-)
+    MVM_ATT_SGN_EQ,  // equals sign (=)
+    MVM_ATT_SGN_DL,  // dollar sign ($)
+    MVM_ATT_SGN_AT,  // at symbol (@)
+    MVM_ATT_SGN_CL,  // colon sign (:)
+    MVM_ATT_SGN_HS,  // hash symbol (#)
+    MVM_ATT_SGN_PC,  // percentage symbol (%)
     MVM_ATT_STRING,  // double quoted string literal
     MVM_ATT_CHAR,    // single quoted char literal
     MVM_ATT_COMMENT, // semicolon leading comment
@@ -34,8 +44,6 @@ typedef enum {
 
 
 /* -- Types -- */
-
-typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
 
 typedef struct mvm_asm_token_t {
 
