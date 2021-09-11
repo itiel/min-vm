@@ -66,6 +66,8 @@ typedef struct mvm_asm_token_reader_t {
 
 /* -- Functions -- */
 
+i32 mvm_asm_token_type_is_valid (i32 token_type);
+i32 mvm_asm_token_start         (mvm_asm_tokenizer_t * tokenizer, i32 tok_type);
 i32 mvm_asm_token_yield         (mvm_asm_tokenizer_t * tokenizer, mvm_asm_token_t * token);
 i32 mvm_asm_token_show          (mvm_asm_token_t * token);
 i32 mvm_asm_token_repr_show     (mvm_asm_token_t * token);

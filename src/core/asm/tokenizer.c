@@ -255,9 +255,8 @@ i32 mvm_asm_tokenize_next (
 
             case '\n':
 
-                tokenizer->data.tok_type  = MVM_ATT_BREAK;
-                tokenizer->data.tok_start = tokenizer->data.ch_idx;
-                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+                if (!mvm_asm_token_start(tokenizer, MVM_ATT_BREAK)) 
+                    goto tok_str_err;
 
                 if (!mvm_asm_token_yield(tokenizer, token)) 
                     goto tok_yld_err;
@@ -275,10 +274,8 @@ i32 mvm_asm_tokenize_next (
 
                 tokenizer->data.cur_state = MVM_ATDS_SIGN;
 
-                tokenizer->data.tok_start = tokenizer->data.ch_idx;
-                tokenizer->data.tok_col   = tokenizer->data.cur_col;
-
-                tokenizer->data.tok_type = 
+                if (!mvm_asm_token_start(
+                    tokenizer, 
                     ch == '.' ? MVM_ATT_SGN_PR :
                     ch == '+' ? MVM_ATT_SGN_PL :
                     ch == '-' ? MVM_ATT_SGN_MN :
@@ -287,7 +284,8 @@ i32 mvm_asm_tokenize_next (
                     ch == '@' ? MVM_ATT_SGN_AT :
                     ch == ':' ? MVM_ATT_SGN_CL :
                     ch == '#' ? MVM_ATT_SGN_HS :
-                    MVM_ATT_SGN_PC;
+                    MVM_ATT_SGN_PC)) 
+                    goto tok_str_err;
 
                 if (!mvm_asm_token_yield(tokenizer, token)) 
                     goto tok_yld_err;
@@ -300,9 +298,8 @@ i32 mvm_asm_tokenize_next (
 
                 tokenizer->data.cur_state = MVM_ATDS_STRING;
 
-                tokenizer->data.tok_type  = MVM_ATT_STRING;
-                tokenizer->data.tok_start = tokenizer->data.ch_idx + 1;
-                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+                if (!mvm_asm_token_start(tokenizer, MVM_ATT_STRING)) 
+                    goto tok_str_err;
 
                 continue;
 
@@ -310,9 +307,8 @@ i32 mvm_asm_tokenize_next (
 
                 tokenizer->data.cur_state = MVM_ATDS_CHAR;
 
-                tokenizer->data.tok_type  = MVM_ATT_CHAR;
-                tokenizer->data.tok_start = tokenizer->data.ch_idx + 1;
-                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+                if (!mvm_asm_token_start(tokenizer, MVM_ATT_CHAR)) 
+                    goto tok_str_err;
 
                 fisrt_ch = TRUE;
 
@@ -322,9 +318,8 @@ i32 mvm_asm_tokenize_next (
 
                 tokenizer->data.cur_state = MVM_ATDS_COMMENT;
 
-                tokenizer->data.tok_type  = MVM_ATT_COMMENT;
-                tokenizer->data.tok_start = tokenizer->data.ch_idx;
-                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+                if (!mvm_asm_token_start(tokenizer, MVM_ATT_COMMENT)) 
+                    goto tok_str_err;
 
                 continue;
 
@@ -334,9 +329,8 @@ i32 mvm_asm_tokenize_next (
 
                 tokenizer->data.cur_state = MVM_ATDS_NAME;
 
-                tokenizer->data.tok_type  = MVM_ATT_NAME;
-                tokenizer->data.tok_start = tokenizer->data.ch_idx;
-                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+                if (!mvm_asm_token_start(tokenizer, MVM_ATT_NAME)) 
+                    goto tok_str_err;
 
                 continue;
 
@@ -346,9 +340,8 @@ i32 mvm_asm_tokenize_next (
 
                 tokenizer->data.cur_state = MVM_ATDS_NUMBER;
 
-                tokenizer->data.tok_type  = MVM_ATT_NUMBER;
-                tokenizer->data.tok_start = tokenizer->data.ch_idx;
-                tokenizer->data.tok_col   = tokenizer->data.cur_col;
+                if (!mvm_asm_token_start(tokenizer, MVM_ATT_NUMBER)) 
+                    goto tok_str_err;
 
                 if (ch == '0') lead_zero = TRUE;
 
@@ -702,6 +695,17 @@ i32 mvm_asm_tokenize_next (
     tokenizer->status = MVM_AES_END;
 
     return 1;
+
+    // GOTO: Token start error
+ 
+    tok_str_err: 
+
+    put_error_method( 
+        "mvm_asm_tokenize_next", 
+        "Something unexpected happened while starting token."
+    );
+ 
+    return -1;
 
     // GOTO: Token yield error
  

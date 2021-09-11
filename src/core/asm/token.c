@@ -13,6 +13,54 @@
 
 /* -- Token methods -- */
 
+i32 mvm_asm_token_type_is_valid (i32 token_type) {
+ 
+    return token_type >= MVM_ATT_START && token_type <= MVM_ATT_END;
+
+}
+
+i32 mvm_asm_token_start (
+    mvm_asm_tokenizer_t * tokenizer,
+    i32                 tok_type) 
+{
+
+    if (!tokenizer) {
+ 
+        put_error_method( 
+            "mvm_asm_token_start", 
+            "Tokenizer pointer should not be NULL."
+        );
+
+        return FALSE;
+
+    }
+
+    if (!mvm_asm_token_type_is_valid(tok_type)) {
+
+        put_error_method( 
+            "mvm_asm_token_start", 
+            "Token type not valid. (%d)",
+            tok_type
+        );
+
+        return FALSE;
+
+    }
+
+    tokenizer->data.tok_type  = tok_type;
+    tokenizer->data.tok_start = tokenizer->data.ch_idx;
+    tokenizer->data.tok_col   = tokenizer->data.cur_col;
+
+    if (tok_type == MVM_ATT_STRING || tok_type == MVM_ATDS_CHAR) {
+
+        tokenizer->data.tok_start++;
+ 
+    }
+
+    return TRUE;
+
+}
+
 i32 mvm_asm_token_yield (
     mvm_asm_tokenizer_t * tokenizer, 
     mvm_asm_token_t     * token) 
@@ -156,7 +204,15 @@ i32 mvm_asm_token_typename_show (mvm_asm_token_t * token) {
 
     i8 * type_name; 
 
-    // TODO: Check for null pointer
+    if (!token) {
+
+        put_error_method( 
+            "mvm_asm_token_typename_show", 
+            "Token pointer should not be NULL."
+        );
+
+        return FALSE;
+    }
  
     switch (token->type) { 
  
