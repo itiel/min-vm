@@ -14,7 +14,10 @@ ASM_DIR = $(TEST_DIR)/$(ASM_NM)
 ASM_EX  = $(ASM_DIR)/tok-scan-test.mvs
 ASM_OUT = $(ASM_DIR)/$(ASM_NM).out
 ASM_IN  = $(ASM_DIR)/$(ASM_NM).c
-ASM_DEP = $(SRC_DIR)/core/asm.c
+ASM_DEP = $(SRC_DIR)/core/asm.c $(SRC_DIR)/core/asm/token.c $(SRC_DIR)/core/asm/tokenizer.c
+
+# TODO: I really need to make this 
+#		dependencies stuff atuomatic
 
 asm-test:
 	$(CC) $(FLAGS) -o $(ASM_OUT) $(ASM_IN) $(ASM_DEP)

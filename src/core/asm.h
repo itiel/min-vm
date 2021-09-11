@@ -25,6 +25,20 @@ typedef struct mvm_asm_token_reader_t mvm_asm_token_reader_t;
 typedef struct mvm_asm_tokenizer_data_t mvm_asm_tokenizer_data_t;
 typedef struct mvm_asm_tokenizer_t mvm_asm_tokenizer_t;
 
+/* -- Enums -- */
+
+// Assembler element status
+
+typedef enum {
+
+    // Don't change this order 
+
+    MVM_AES_END,
+    MVM_AES_INIT,
+    MVM_AES_IN_USE,
+
+} mvm_asm_elm_status_t;
+
 /* -- Functions -- */
 
 int mvm_asm_assembler_init      (mvm_asm_assembler_t * assembler, char * file_name);

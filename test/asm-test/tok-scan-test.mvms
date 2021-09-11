@@ -67,14 +67,14 @@ ldb #0x100  ; Immediate value assigning
 lda %b      ; Loading to a the value at the addres in b 
 a+b         ; Names and signs with no space between
 a + b +c+ d ; Names and signs with varying space
-&/()?!|*,   ; Not (yet) recognized signs/characters
+;&/()?!|*,   ; Not (yet) recognized signs/characters
 
 ;; -- String and character literals -- ;;
 
 "ABCDEFGH"  ; Good string 
 "ABCDEF\n"  ; String with escape characters
 "\"ABC\""   ; Also escape characters
-"!#$%&/()?" ; String with bad characters
+"&/()?!|*"  ; String with bad characters
 "1""2"      ; Two strings back to back
 "RLYLONGSTR"; There's no space between literal and comment
 "	"         ; String with tab
