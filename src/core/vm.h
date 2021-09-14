@@ -6,43 +6,36 @@
 #ifndef _VM_H_
 #define _VM_H_
 
-typedef char minvm_Word;
-typedef unsigned char minvm_UnsWord;
+typedef char mvm_vm_word_t;
+typedef unsigned char mvm_vm_uword_t;
 
-typedef struct minvm_Register {
+typedef struct mvm_reg_t {
 
-    minvm_Word data;
+    mvm_vm_uword_t data;
 
-} minvm_Register;
+} mvm_reg_t;
 
-typedef struct minvm_RegisterGroup {
+typedef struct mvm_reg_group_t {
  
-    minvm_Register * a_reg;
-    minvm_Register * b_reg;
-    minvm_Register * c_reg;
+    mvm_reg_t * a_reg;
+    mvm_reg_t * b_reg;
+    mvm_reg_t * c_reg;
 
-} minvm_RegisterGroup;
+} mvm_reg_group_t;
 
-typedef struct minvm_VM {
+typedef struct mvm_vm_t {
 
-    minvm_RegisterGroup * regs;
+    mvm_reg_group_t * regs;
 
-} minvm_VM;
+} mvm_vm_t;
 
-minvm_Register * minvm_Register_Create ();
-
-void minvm_Register_Delete (minvm_Register * reg);
-
-minvm_RegisterGroup * minvm_RegisterGroup_Create ();
-
-void minvm_RegisterGroup_Delete (minvm_RegisterGroup * regs);
-
-void minvm_RegisterGroup_Debug (minvm_RegisterGroup * regs);
-
-minvm_VM * minvm_VM_Create () ;
-
-void minvm_VM_Delete (minvm_VM * vm);
-
-void minvm_VM_ExecuteInstruction (minvm_RegisterGroup * regs, minvm_UnsWord * inst);
+mvm_reg_t       * mvm_reg_create ();
+void            mvm_reg_delete (mvm_reg_t * reg);
+mvm_reg_group_t * mvm_reg_group_create ();
+void            mvm_reg_group_delete (mvm_reg_group_t * regs);
+void            mvm_reg_group_debug (mvm_reg_group_t * regs);
+mvm_vm_t        * mvm_vm_create ();
+void            mvm_vm_delete (mvm_vm_t * vm);
+void            mvm_vm_exec (mvm_reg_group_t * regs, mvm_vm_uword_t * inst);
 
 #endif /* #ifndef _VM_H_ */

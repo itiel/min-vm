@@ -8,6 +8,7 @@
 
 /* -- Character validation macros -- */
 
+// ch_is_printable : all printable chars
 // ch_is_lower     : a-z
 // ch_is_upper     : A-Z
 // ch_is_alph      : a-Z
@@ -19,6 +20,8 @@
 // ch_is_oct       : 0-7
 // ch_is_hex       : 0-9 || a-F 
 
+#define  ch_is_printable(_ch) \
+    (_ch >= ' ' && _ch <= '~')
 #define      ch_is_lower(_ch) \
     (_ch >= 'a' && _ch <= 'z')
 #define      ch_is_upper(_ch) \
