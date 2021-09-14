@@ -12,8 +12,8 @@
 
 /* -- Macro definitions -- */
 
-#define MVM_RAM_SZ     0xFFFF
-#define MVM_RAM_DMP_RW 0xF
+#define MVM_RAM_SZ     0x10000 // 0xFF is like 99, not quite 100
+#define MVM_RAM_DMP_RW 0x10
 #define MVM_RAM_DMP_CH '.'
 
 /* -- Type definitions -- */

@@ -10,7 +10,7 @@ int main () {
         ram_instance.buffer[i] = i;
     }
 
-    ram_instance.buffer[0x468A] = 'P';
+    ram_instance.buffer[0xFFFF] = 'P';
 
     mvm_vm_ram_dump(&ram_instance);
 
