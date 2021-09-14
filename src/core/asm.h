@@ -10,13 +10,15 @@
 
 #include <stdio.h>
 
+#include <util/fwn.h>
+
 /* -- Types -- */
 
 typedef struct mvm_asm_assembler_t {
  
     FILE * file;
-    char * file_name;
-    int    status;
+    i8   * file_name;
+    i32    status;
 
 } mvm_asm_assembler_t;
 
@@ -41,9 +43,9 @@ typedef enum {
 
 /* -- Functions -- */
 
-int mvm_asm_assembler_init      (mvm_asm_assembler_t * assembler, char * file_name);
-int mvm_asm_assembler_init_file (mvm_asm_assembler_t * assembler, FILE * file, char * file_name);
-int mvm_asm_assemble            (mvm_asm_assembler_t * assembler);
-int mvm_asm_assembler_kill      (mvm_asm_assembler_t * assembler);
+i32 mvm_asm_assembler_init      (mvm_asm_assembler_t * assembler, i8 * file_name);
+i32 mvm_asm_assembler_init_file (mvm_asm_assembler_t * assembler, FILE * file, i8 * file_name);
+i32 mvm_asm_assemble            (mvm_asm_assembler_t * assembler);
+i32 mvm_asm_assembler_kill      (mvm_asm_assembler_t * assembler);
 
 #endif /* #ifndef _MVM_ASM_H_ */

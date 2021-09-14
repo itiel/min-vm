@@ -6,8 +6,14 @@
 #ifndef _VM_H_
 #define _VM_H_
 
-typedef char mvm_vm_word_t;
-typedef unsigned char mvm_vm_uword_t;
+/* -- Includes -- */
+
+#include <util/fwn.h>
+
+/* -- Type definitions -- */
+
+typedef i8 mvm_vm_word_t;
+typedef u8 mvm_vm_uword_t;
 
 typedef struct mvm_reg_t {
 
@@ -28,6 +34,8 @@ typedef struct mvm_vm_t {
     mvm_reg_group_t * regs;
 
 } mvm_vm_t;
+
+/* -- Function definitions -- */
 
 mvm_reg_t       * mvm_reg_create ();
 void            mvm_reg_delete (mvm_reg_t * reg);

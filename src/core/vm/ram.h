@@ -8,14 +8,12 @@
 
 /* -- Includes -- */
 
-#include <util/fwn.h>
-
-#include "../vm.h"
+#include <core/vm.h>
 
 /* -- Macro definitions -- */
 
 #define MVM_RAM_SZ     0xFFFF
-#define MVM_RAM_DMP_RW 16
+#define MVM_RAM_DMP_RW 0xF
 #define MVM_RAM_DMP_CH '.'
 
 /* -- Type definitions -- */

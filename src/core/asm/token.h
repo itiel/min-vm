@@ -8,9 +8,7 @@
 
 /* -- Includes -- */
 
-#include <util/fwn.h>
-
-#include "../asm.h"
+#include <core/asm.h>
 
 /* -- Enums -- */
 

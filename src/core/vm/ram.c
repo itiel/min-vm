@@ -5,14 +5,14 @@
 
 /* -- Includes -- */
 
+#include <core/vm/ram.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 
 #include <util/err.h>
 #include <util/bool.h>
 #include <util/chval.h>
-
-#include "ram.h"
 
 i32 mvm_vm_ram_init (mvm_vm_ram_t * ram_instnc) {
 

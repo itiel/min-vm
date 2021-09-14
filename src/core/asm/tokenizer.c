@@ -5,13 +5,13 @@
 
 /* -- Includes -- */
 
+#include <core/asm/token.h>
+#include <core/asm/tokenizer.h>
+
 #include <util/err.h>
 #include <util/bool.h>
 #include <util/choc.h>
 #include <util/chval.h>
-
-#include "token.h"
-#include "tokenizer.h"
 
 /* -- Macro definitions -- */
 

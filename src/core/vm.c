@@ -3,11 +3,11 @@
  . Created: 29/07/2021
 */
 
+#include <core/vm.h>
+#include <core/inst.h>
+
 #include <stdlib.h>
 #include <stdio.h>
-
-#include "vm.h"
-#include "inst.h"
 
 mvm_reg_t * mvm_reg_create () {
 

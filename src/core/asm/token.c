@@ -5,11 +5,11 @@
 
 /* -- Includes -- */
 
-#include <util/bool.h>
-#include <util/err.h>
+#include <core/asm/token.h>
+#include <core/asm/tokenizer.h>
 
-#include "token.h"
-#include "tokenizer.h"
+#include <util/err.h>
+#include <util/bool.h>
 
 /* -- Token methods -- */
 
