@@ -3,6 +3,9 @@
  . Created: 11/08/2021
 */
 
+#ifndef _MVM_INST_H_
+#define _MVM_INST_H_
+
 /*
  .  Opcode | Inst Name(s)     | Description
  . --------+------------------+-------------------------------------------
@@ -53,9 +56,6 @@
  .   0xFF  | halt, hlt, stop, | Stop simulation
  .         | stp
 */
-
-#ifndef _INST_H_
-#define _INST_H_
 
 /* -- Includes -- */
 

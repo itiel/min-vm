@@ -3,47 +3,34 @@
  . Created: 11/08/2021
 */
 
-#ifndef _VM_H_
-#define _VM_H_
+#ifndef _MVM_VM_H_
+#define _MVM_VM_H_
 
 /* -- Includes -- */
 
 #include <util/fwn.h>
 
+#include <core/untsz.h>
+
+#include <core/vm/reg.h>
+#include <core/vm/ram.h>
+
 /* -- Type definitions -- */
-
-typedef i8 mvm_vm_word_t;
-typedef u8 mvm_vm_uword_t;
-
-typedef struct mvm_reg_t {
-
-    mvm_vm_uword_t data;
-
-} mvm_reg_t;
-
-typedef struct mvm_reg_group_t {
- 
-    mvm_reg_t * a_reg;
-    mvm_reg_t * b_reg;
-    mvm_reg_t * c_reg;
-
-} mvm_reg_group_t;
 
 typedef struct mvm_vm_t {
 
-    mvm_reg_group_t * regs;
+    i32                status;
+    mvm_vm_regs_main_t main_regs;
+    mvm_vm_reg_ptr_t   addr_ptr;
+    mvm_vm_reg_ptr_t   code_ptr;
+    mvm_vm_ram_t       * ram;
 
 } mvm_vm_t;
 
 /* -- Function definitions -- */
 
-mvm_reg_t       * mvm_reg_create ();
-void            mvm_reg_delete (mvm_reg_t * reg);
-mvm_reg_group_t * mvm_reg_group_create ();
-void            mvm_reg_group_delete (mvm_reg_group_t * regs);
-void            mvm_reg_group_debug (mvm_reg_group_t * regs);
-mvm_vm_t        * mvm_vm_create ();
-void            mvm_vm_delete (mvm_vm_t * vm);
-void            mvm_vm_exec (mvm_reg_group_t * regs, mvm_vm_uword_t * inst);
+i32 mvm_vm_init (mvm_vm_t * vm);
+i32 mvm_vm_run  (mvm_vm_t * vm);
+i32 mvm_vm_kill (mvm_vm_t * vm);
 
-#endif /* #ifndef _VM_H_ */
+#endif /* #ifndef _MVM_VM_H_ */

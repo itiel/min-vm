@@ -3,16 +3,26 @@
  . Created: 12/09/2021
 */
 
-#ifndef _RAM_H_
-#define _RAM_H_
+#ifndef _MVM_VM_RAM_H_
+#define _MVM_VM_RAM_H_
 
 /* -- Includes -- */
 
-#include <core/vm.h>
+#include <util/fwn.h>
+
+#include <core/untsz.h>
 
 /* -- Macro definitions -- */
 
-#define MVM_RAM_SZ     0x10000 // 0xFF is like 99, not quite 100
+// Max reachable value with
+// segment:offset system and 
+// only 8-bit registers
+// 0xFF:0xFF = 0x10EF = 4335
+
+#define MVM_RAM_SZ 0x10EF 
+
+// 0xF is like 9, not quite 10
+
 #define MVM_RAM_DMP_RW 0x10
 #define MVM_RAM_DMP_CH '.'
 
@@ -20,8 +30,8 @@
 
 typedef struct mvm_vm_ram_t {
 
-    i64            size;
-    mvm_vm_uword_t * buffer;
+    i64         size;
+    mvm_uword_t * buffer;
 
 } mvm_vm_ram_t;
 
@@ -31,4 +41,4 @@ i32 mvm_vm_ram_init (mvm_vm_ram_t * ram_instnc);
 i32 mvm_vm_ram_kill (mvm_vm_ram_t * ram_instnc); 
 i32 mvm_vm_ram_dump (mvm_vm_ram_t * ram_instnc); 
 
-#endif /* #ifndef _RAM_H_ */
+#endif /* #ifndef _MVM_VM_RAM_H_ */

@@ -3,83 +3,97 @@
  . Created: 29/07/2021
 */
 
+/* -- Includes -- */
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <core/vm.h>
 #include <core/inst.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <util/fwn.h>
+#include <util/err.h>
+#include <util/bool.h>
 
-mvm_reg_t * mvm_reg_create () {
+/* -- Function definitions -- */
 
-    return malloc(sizeof(mvm_reg_t));
+i32 mvm_vm_init (mvm_vm_t * vm) {
 
-}
+    if (!vm) {
 
-void mvm_reg_delete (mvm_reg_t * reg) {
+        put_error_method(
+            "mvm_vm_init",
+            "VM pointer should not be NULL."
+        );
 
-    free(reg);
+        return FALSE;
 
-    return;
+    }
 
-}
+    if (!(vm->ram = malloc(sizeof(mvm_vm_ram_t)))) {
 
-mvm_reg_group_t * mvm_reg_group_create () {
+        put_error_method(
+            "mvm_vm_init",
+            "Something unexpected happened while allocating memory for VM's RAM."
+        );
 
-    mvm_reg_group_t * regs = malloc(sizeof(mvm_reg_group_t));
+        return FALSE;
 
-    regs->a_reg = mvm_reg_create();
-    regs->b_reg = mvm_reg_create();
-    regs->c_reg = mvm_reg_create();
+    }
 
-    return regs;
+    if (!mvm_vm_ram_init(vm->ram)) {
 
-}
+        put_error_method(
+            "mvm_vm_init",
+            "Something unexpected happened while initializing RAM."
+        );
 
-void mvm_reg_group_delete (mvm_reg_group_t * regs) {
+        return FALSE;
 
-    mvm_reg_delete(regs->a_reg);
-    mvm_reg_delete(regs->b_reg);
-    mvm_reg_delete(regs->c_reg);
+    }
 
-    free(regs);
-
-    return;
-
-}
-
-void mvm_reg_group_debug (mvm_reg_group_t * regs) {
-
-    printf(" - Debugging - \n");
-    printf("    reg a: %d\n", regs->a_reg->data);
-    printf("    reg b: %d\n", regs->b_reg->data);
-    printf("    reg c: %d\n", regs->c_reg->data);
-    printf("\n");
-
-    return;
+    return TRUE;
 
 }
 
-mvm_vm_t * mvm_vm_create () {
+i32 mvm_vm_run (mvm_vm_t * vm) {
 
-    mvm_vm_t * vm = malloc(sizeof(mvm_vm_t));
+    if (!vm) {
 
-    vm->regs = mvm_reg_group_create();
- 
-    return vm;
+        put_error_method(
+            "mvm_vm_run",
+            "VM pointer should not be NULL."
+        );
+
+        return FALSE;
+
+    }
+
+    return TRUE;
+
 }
 
-void mvm_vm_delete (mvm_vm_t * vm) {
+i32 mvm_vm_kill (mvm_vm_t * vm) {
 
-    mvm_reg_group_delete(vm->regs);
+    if (!vm) {
 
-    free(vm);
+        put_error_method(
+            "mvm_vm_kill",
+            "VM pointer should not be NULL."
+        );
 
-    return;
+        return FALSE;
+
+    }
+
+    mvm_vm_ram_kill(vm->ram); 
+
+    return TRUE;
+
 }
 
-void mvm_vm_exec (mvm_reg_group_t * regs, mvm_vm_uword_t * inst) {
+i32 mvm_vm_exec (mvm_vm_t * vm, mvm_uword_t inst) {
 
-    
+    return TRUE;
 
-    return;
 }

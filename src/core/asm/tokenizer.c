@@ -68,7 +68,7 @@ i32 mvm_asm_tokenizer_init (
         return FALSE;
     }
 
-    if (assembler->status != MVM_AES_INIT) {
+    if (assembler->status != MVM_ELST_INIT) {
  
         put_error_method( 
             "mvm_asm_tokenizer_init", 
@@ -78,10 +78,10 @@ i32 mvm_asm_tokenizer_init (
         return FALSE;
     }
 
-    assembler->status = MVM_AES_IN_USE;
+    assembler->status = MVM_ELST_IN_USE;
 
     tokenizer->assembler = assembler;
-    tokenizer->status = MVM_AES_INIT;
+    tokenizer->status = MVM_ELST_INIT;
 
     // Loop variables
 
@@ -199,18 +199,18 @@ i32 mvm_asm_tokenize_next (
 
     }
 
-    if (tokenizer->status == MVM_AES_END) return 0;
+    if (tokenizer->status == MVM_ELST_END) return 0;
 
     // Start of process
 
-    if (tokenizer->status == MVM_AES_INIT) {
+    if (tokenizer->status == MVM_ELST_INIT) {
  
         // Append file-start token before scanning
 
         if (!mvm_asm_token_yield(tokenizer, token)) 
             goto tok_yld_err;
 
-        tokenizer->status = MVM_AES_IN_USE;
+        tokenizer->status = MVM_ELST_IN_USE;
 
         return 1;
 
@@ -692,7 +692,7 @@ i32 mvm_asm_tokenize_next (
     if (!mvm_asm_token_yield(tokenizer, token)) 
         goto tok_yld_err;
 
-    tokenizer->status = MVM_AES_END;
+    tokenizer->status = MVM_ELST_END;
 
     return 1;
 

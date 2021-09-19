@@ -4,6 +4,7 @@
 */
 
 #include <core/asm.h>
+
 #include <util/err.h>
 
 int main (int argc, char const ** argv) {

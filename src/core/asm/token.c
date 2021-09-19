@@ -273,7 +273,7 @@ i32 mvm_asm_token_reader_init (
 
     token_reader->token  = token;
     token_reader->ch_idx = 0;
-    token_reader->status = MVM_AES_INIT;
+    token_reader->status = MVM_ELST_INIT;
 
     fseek(token->tokenizer->assembler->file, token->start, SEEK_SET);
 
@@ -283,13 +283,13 @@ i32 mvm_asm_token_reader_init (
 
 i32 mvm_asm_token_read_next (mvm_asm_token_reader_t * token_reader) {
 
-    if (token_reader->status == MVM_AES_END) {
+    if (token_reader->status == MVM_ELST_END) {
  
         return EOF;
 
     }
 
-    token_reader->status = MVM_AES_IN_USE;
+    token_reader->status = MVM_ELST_IN_USE;
 
     if (token_reader->token->type == MVM_ATT_START ||
         token_reader->token->type == MVM_ATT_END   ||
@@ -297,7 +297,7 @@ i32 mvm_asm_token_read_next (mvm_asm_token_reader_t * token_reader) {
         token_reader->ch_idx == token_reader->token->len) 
     {
 
-        token_reader->status = MVM_AES_END;
+        token_reader->status = MVM_ELST_END;
 
         return EOF;
 

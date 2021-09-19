@@ -29,13 +29,13 @@ i32 mvm_vm_ram_init (mvm_vm_ram_t * ram_instnc) {
 
     ram_instnc->size = MVM_RAM_SZ;
 
-    ram_instnc->buffer = malloc(MVM_RAM_SZ * sizeof(mvm_vm_word_t));
+    ram_instnc->buffer = malloc(MVM_RAM_SZ * sizeof(mvm_uword_t));
 
     if (!ram_instnc->buffer) {
 
         put_error_method(
             "mvm_vm_ram_init",
-            "Something unexpected happened while allocating RAM."
+            "Something unexpected happened while allocating memory for RAM's buffer."
         );
 
         return FALSE;
@@ -71,8 +71,7 @@ i32 mvm_vm_ram_dump (mvm_vm_ram_t * ram_instnc) {
     i32            same;
     i32            same_last;
     i32            dif;
-    mvm_vm_uword_t row[MVM_RAM_DMP_RW];
-
+    mvm_uword_t row[MVM_RAM_DMP_RW];
 
     if (!ram_instnc) {
 

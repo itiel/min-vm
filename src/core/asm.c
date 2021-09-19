@@ -7,13 +7,14 @@
 
 #include <stdio.h>
 
+#include <core/asm.h>
+#include <core/asm/token.h>
+#include <core/asm/tokenizer.h>
+#include <core/inst.h>
+
 #include <util/fwn.h>
 #include <util/bool.h>
 #include <util/err.h>
-
-#include "asm.h"
-#include "asm/token.h"
-#include "asm/tokenizer.h"
 
 /* -- Function definitions -- */
 
@@ -49,7 +50,7 @@ i32 mvm_asm_assembler_init_file (
 
     assembler->file            = file;
     assembler->file_name       = file_name;
-    assembler->status          = MVM_AES_INIT;
+    assembler->status          = MVM_ELST_INIT;
 
     return TRUE;
 
@@ -113,13 +114,13 @@ i32 mvm_asm_assembler_kill (mvm_asm_assembler_t * assembler) {
 
     }
 
-    if (assembler->status != MVM_AES_END) {
+    if (assembler->status != MVM_ELST_END) {
 
         fclose(assembler->file);
 
     }
 
-    assembler->status = MVM_AES_END;
+    assembler->status = MVM_ELST_END;
 
     return TRUE;
 
@@ -141,7 +142,7 @@ i32 mvm_asm_assemble (mvm_asm_assembler_t * assembler) {
         return FALSE;
     }
 
-    if (assembler->status != MVM_AES_INIT) {
+    if (assembler->status != MVM_ELST_INIT) {
  
         put_error_method( 
             "mvm_asm_assemble", 
@@ -163,7 +164,7 @@ i32 mvm_asm_assemble (mvm_asm_assembler_t * assembler) {
 
     }
 
-    assembler->status = MVM_AES_IN_USE;
+    assembler->status = MVM_ELST_IN_USE;
 
     while ((result = mvm_asm_tokenize_next(&tokenizer, &token))) {
 

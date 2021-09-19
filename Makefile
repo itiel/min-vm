@@ -13,7 +13,7 @@ VM_NM  = vm-test
 VM_DIR = $(TEST_DIR)/$(VM_NM)
 VM_OUT = $(VM_DIR)/$(VM_NM).out
 VM_IN  = $(VM_DIR)/$(VM_NM).c
-VM_DEP = $(SRC_DIR)/core/vm.c
+VM_DEP = $(SRC_DIR)/core/vm.c $(SRC_DIR)/core/vm/ram.c
 
 # TODO: I really need to make this 
 #		dependencies stuff atuomatic
