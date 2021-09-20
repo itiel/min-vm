@@ -18,6 +18,13 @@ typedef struct mvm_vm_reg_t {
 
 } mvm_vm_reg_t;
 
+typedef struct mvm_vm_reg_ptr_t {
+    
+    mvm_vm_reg_t seg;
+    mvm_vm_reg_t off;
+
+} mvm_vm_reg_ptr_t;
+
 typedef struct mvm_vm_regs_main_t {
     
     mvm_vm_reg_t a;
@@ -26,11 +33,11 @@ typedef struct mvm_vm_regs_main_t {
 
 } mvm_vm_regs_main_t;
 
-typedef struct mvm_vm_reg_ptr_t {
+typedef struct mvm_vm_regs_addr_t {
     
-    mvm_vm_reg_t seg;
-    mvm_vm_reg_t off;
+    mvm_vm_reg_ptr_t r;
+    mvm_vm_reg_ptr_t s;
 
-} mvm_vm_reg_ptr_t;
+} mvm_vm_regs_addr_t;
 
 #endif /* #ifndef _MVM_VM_REG_H_ */

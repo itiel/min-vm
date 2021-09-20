@@ -3,12 +3,14 @@
  . Created: 15/09/2021
 */
 
+/*
+ . VM Element Status
+ . 
+ . TODO description
+*/
+
 #ifndef _MVM_ELST_H_
 #define _MVM_ELST_H_
-
-/* -- Enums -- */
-
-// VM element status
 
 typedef enum {
 

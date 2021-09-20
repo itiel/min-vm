@@ -21,8 +21,8 @@ typedef struct mvm_vm_t {
 
     i32                status;
     mvm_vm_regs_main_t main_regs;
-    mvm_vm_reg_ptr_t   addr_ptr;
-    mvm_vm_reg_ptr_t   code_ptr;
+    mvm_vm_regs_addr_t addr_regs;
+    mvm_vm_reg_ptr_t   stack_ptr;
     mvm_vm_ram_t       * ram;
 
 } mvm_vm_t;
