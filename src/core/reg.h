@@ -8,13 +8,13 @@
 
 /* -- Includes -- */
 
-#include <util/fwn.h>
+#include <core/dunt.h>
 
 /* -- Type Definitions -- */
 
 typedef struct mvm_vm_reg_t {
 
-    u8 buffer;
+    mvm_word_t buffer;
 
 } mvm_vm_reg_t;
 

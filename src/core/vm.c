@@ -8,12 +8,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <core/vm.h>
-#include <core/inst.h>
-
 #include <util/fwn.h>
 #include <util/err.h>
 #include <util/bool.h>
+
+#include <core/vm.h>
+#include <core/inst.h>
 
 /* -- Function definitions -- */
 
@@ -92,7 +92,7 @@ i32 mvm_vm_kill (mvm_vm_t * vm) {
 
 }
 
-i32 mvm_vm_exec (mvm_vm_t * vm, mvm_uword_t inst) {
+i32 mvm_vm_exec (mvm_vm_t * vm, mvm_word_t inst) {
 
     return TRUE;
 

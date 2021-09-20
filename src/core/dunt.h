@@ -16,7 +16,6 @@
 
 /* -- Type definitons -- */
 
-typedef i8 mvm_word_t;
-typedef u8 mvm_uword_t;
+typedef u8 mvm_word_t;
 
 #endif /* #ifndef _MVM_DUNT_H_ */

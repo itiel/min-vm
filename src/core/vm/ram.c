@@ -29,7 +29,7 @@ i32 mvm_vm_ram_init (mvm_vm_ram_t * ram_instnc) {
 
     ram_instnc->size = MVM_RAM_SZ;
 
-    ram_instnc->buffer = malloc(MVM_RAM_SZ * sizeof(mvm_uword_t));
+    ram_instnc->buffer = malloc(MVM_RAM_SZ * sizeof(mvm_word_t));
 
     if (!ram_instnc->buffer) {
 
@@ -71,7 +71,7 @@ i32 mvm_vm_ram_dump (mvm_vm_ram_t * ram_instnc) {
     i32            same;
     i32            same_last;
     i32            dif;
-    mvm_uword_t row[MVM_RAM_DMP_RW];
+    mvm_word_t row[MVM_RAM_DMP_RW];
 
     if (!ram_instnc) {
 

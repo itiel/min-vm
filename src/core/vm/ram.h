@@ -31,7 +31,7 @@
 typedef struct mvm_vm_ram_t {
 
     i64         size;
-    mvm_uword_t * buffer;
+    mvm_word_t * buffer;
 
 } mvm_vm_ram_t;
 
