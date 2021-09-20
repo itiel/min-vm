@@ -1,16 +1,14 @@
 /*
  . Author: Itiel Lopez - itiel@soyitiel.com
  . Created: 19/09/2021
-*/
-
-/*
- . Unit Sizes
  . 
- . Description (TODO)
+ . -- Data Unit types --
+ .
+ . TODO: Write a description
 */
 
-#ifndef _MVM_UNTSZ_H_
-#define _MVM_UNTSZ_H_
+#ifndef _MVM_DUNT_H_
+#define _MVM_DUNT_H_
 
 /* -- Includes -- */
 
@@ -21,4 +19,4 @@
 typedef i8 mvm_word_t;
 typedef u8 mvm_uword_t;
 
-#endif /* #ifndef _MVM_UNTSZ_H_ */
+#endif /* #ifndef _MVM_DUNT_H_ */

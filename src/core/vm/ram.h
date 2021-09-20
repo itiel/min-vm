@@ -10,7 +10,7 @@
 
 #include <util/fwn.h>
 
-#include <core/untsz.h>
+#include <core/dunt.h>
 
 /* -- Macro definitions -- */
 
