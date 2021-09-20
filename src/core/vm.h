@@ -11,8 +11,8 @@
 #include <util/fwn.h>
 
 #include <core/dunt.h>
+#include <core/reg.h>
 
-#include <core/vm/reg.h>
 #include <core/vm/ram.h>
 
 /* -- Type definitions -- */
